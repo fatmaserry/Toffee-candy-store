@@ -1,3 +1,9 @@
+package User;
+
+import Cart.ShoppingCart;
+import Products.Voucher;
+import Orders.Order;
+
 import java.util.ArrayList;
 
 public class Customer {

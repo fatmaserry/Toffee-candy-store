@@ -1,4 +1,8 @@
+package App;
+
 import java.util.Scanner;
+
+import User.*;
 
 public class Application {
     private AuthenticationService authenticationService;

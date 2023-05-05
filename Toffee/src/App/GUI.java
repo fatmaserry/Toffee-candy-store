@@ -1,3 +1,7 @@
+package App;
+
+import App.Application;
+
 import java.util.Scanner;
 
 public class GUI {
@@ -23,7 +27,7 @@ public class GUI {
         System.out.println("Choose the number of the option you want: ");
         System.out.println("1-Log out");
         System.out.println("2-Reset Password");
-        System.out.println("3-Catalog");
+        System.out.println("3-Products.Catalog");
         System.out.println("4-View Cart");
         Scanner in = new Scanner(System.in);
         int option = in.nextInt();
@@ -50,7 +54,7 @@ public class GUI {
         System.out.println("1-Login");
         System.out.println("2-Register");
         System.out.println("3-Reset Password");
-        System.out.println("4-Catalog");
+        System.out.println("4-Products.Catalog");
         Scanner in = new Scanner(System.in);
         int option = in.nextInt();
         switch (option){

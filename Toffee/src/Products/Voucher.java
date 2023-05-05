@@ -1,3 +1,7 @@
+package Products;
+
+import Products.Item;
+
 public class Voucher extends Item {
     private String code;
 

@@ -1,3 +1,9 @@
+package App;
+
+import com.Cart.*;
+import User.*;
+
+
 public class SessionManager {
     private Customer currentCustomer;
 

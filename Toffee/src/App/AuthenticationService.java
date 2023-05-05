@@ -1,6 +1,13 @@
+package App;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
+
+import Products.Catalog;
+import User.Customer;
+import Orders.Order;
+
 
 public class AuthenticationService {
     private Catalog catalog;
