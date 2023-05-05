@@ -82,7 +82,6 @@ public class Item {
             else
                 System.out.println(String.format("| %-72s", i) + "|");
             cnt++;
-
         }
         System.out.println(String.format("| price: %-65s", unitPrice) + "|");
         System.out.println("---------------------------------------------------------------------------");

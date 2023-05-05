@@ -9,6 +9,7 @@ public class AuthenticationService {
     private ArrayList<Order> orders;
 
     public AuthenticationService() {
+        catalog = new Catalog();
         customers = new HashMap<>();
         orders = new ArrayList<>();
     }

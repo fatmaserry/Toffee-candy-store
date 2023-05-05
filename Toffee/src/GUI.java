@@ -3,6 +3,7 @@ import java.util.Scanner;
 public class GUI {
     private Application app;
     public GUI(){
+        app = new Application();
         showMenu();
     }
 
