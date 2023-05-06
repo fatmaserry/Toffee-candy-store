@@ -25,7 +25,7 @@ public class GUI {
         System.out.println("Choose the number of the option you want: ");
         System.out.println("1-Log out");
         System.out.println("2-Reset Password");
-        System.out.println("3-Products.Catalog");
+        System.out.println("3-Products");
         System.out.println("4-View Cart");
         Scanner in = new Scanner(System.in);
         int option = in.nextInt();
@@ -38,6 +38,7 @@ public class GUI {
                 break;
             case 3:
                 app.getAuthenticationService().getCatalog().filterByCategory();
+                // add items to cart
                 break;
             case 4:
                 // need the cart to be implemented
@@ -52,7 +53,7 @@ public class GUI {
         System.out.println("1-Login");
         System.out.println("2-Register");
         System.out.println("3-Reset Password");
-        System.out.println("4-Products.Catalog");
+        System.out.println("4-Catalog");
         Scanner in = new Scanner(System.in);
         int option = in.nextInt();
         switch (option){
@@ -100,8 +101,13 @@ public class GUI {
         String email = in.nextLine();
         System.out.println("Enter Your Password: ");
         String password = in.nextLine();
+        // check password
         System.out.println("Enter Your Address: ");
         String address = in.nextLine();
-        return app.register(email, password, password, address);
+        System.out.println(name);
+        System.out.println(email);
+        System.out.println(password);
+        System.out.println(address);
+        return app.register(name, email, password, address);
     }
 }

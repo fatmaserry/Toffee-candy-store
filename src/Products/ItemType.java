@@ -1,6 +1,7 @@
 package Products;
 
 public enum ItemType {
-     Loose,
-    Sealed
+    Loose,
+    Sealed,
+    Voucher
 }

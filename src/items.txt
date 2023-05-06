@@ -37,3 +37,28 @@ Jolly Rancher
 Loose
 0.00
 0.99
+
+Voucher
+Golden Voucher
+This voucher gives you a discount of 100EGP
+Toffee
+Voucher
+0
+100
+
+Voucher
+Silver Voucher
+This voucher gives you a discount of 50EGP
+Toffee
+Voucher
+0
+50
+
+Voucher
+Bronze Voucher
+This voucher gives you a discount of 25EGP
+Toffee
+Voucher
+0
+25
+.

@@ -21,6 +21,11 @@ public class AuthenticationService {
     }
 
     public Boolean verifyLogin(String email, String  password) {
+        if(customers.get(email) == null)
+            return false;
+
+        System.out.println(customers.get(email).getEmail());
+        System.out.println(customers.get(email).getPassword());
         return Objects.equals(customers.get(email).getPassword(), password);
     }
 
@@ -29,12 +34,13 @@ public class AuthenticationService {
             return false;
         }
         else{
+            System.out.println(customer.getEmail());
+            System.out.println(customer.getPassword());
             customers.put(customer.getEmail(), customer);
             return true;
         }
     }
 
-    // no need for function addUser in authentication service
     public Catalog getCatalog() {
         return catalog;
     }

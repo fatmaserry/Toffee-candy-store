@@ -1,6 +1,8 @@
 package Products;
 
 public class Item {
+    private static int id = 0;
+    private int itemId;
     private String category;
     private String name;
     private float unitPrice;
@@ -10,6 +12,8 @@ public class Item {
     private ItemType type;
 
     public Item(String category, String name, float unitPrice, String description, String brand, float discount, ItemType type) {
+        id++;
+        itemId = id;
         this.category = category;
         this.name = name;
         this.unitPrice = unitPrice;
@@ -36,7 +40,7 @@ public class Item {
     }
 
     public float getUnitPrice() {
-        return unitPrice;
+        return unitPrice - (unitPrice * discount);
     }
 
     public void setUnitPrice(float unitPrice) {
@@ -74,6 +78,23 @@ public class Item {
     public void setType(ItemType type) {
         this.type = type;
     }
+
+    public static int getId() {
+        return id;
+    }
+
+    public static void setId(int id) {
+        Item.id = id;
+    }
+
+    public int getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(int itemId) {
+        this.itemId = itemId;
+    }
+
     public void printItem(){
         System.out.println("---------------------------------------------------------------------------");
         System.out.println(String.format("| name: %-66s", name) + "|");
@@ -85,7 +106,8 @@ public class Item {
                 System.out.println(String.format("| %-72s", i) + "|");
             cnt++;
         }
-        System.out.println(String.format("| price: %-65s", unitPrice) + "|");
+        System.out.println(String.format("| price: %-65s", getUnitPrice()) + "|");
+        System.out.println(String.format("| item id: %-63s", itemId) + "|");
         System.out.println("---------------------------------------------------------------------------");
     }
 }

@@ -13,7 +13,7 @@ public class Catalog {
     public Catalog() {
         items = new HashMap<>();
         try{
-            File myItems = new File("E:\\Desktop\\Assests\\SoftwareEngineering1-ToffeeStore\\src\\items.txt");
+            File myItems = new File("C:\\Users\\over-\\IdeaProjects\\SoftwareEngineering1-ToffeeStore\\src\\items.txt");
             Scanner reader = new Scanner(myItems);
             int cnt = 1;
             String category = "", name = "",description = "", brand = "", type = "";
@@ -43,6 +43,7 @@ public class Catalog {
                         break;
                     case 7:
                         price = Float.parseFloat(data);
+                        break;
                 }
                 cnt++;
             }
@@ -76,10 +77,18 @@ public class Catalog {
         if(Objects.equals(type, "Loose")){
             itemType = ItemType.Loose;
         }
-        else{
+        else if(Objects.equals(type, "Sealed")){
             itemType = ItemType.Sealed;
         }
-        Item newItem = new Item(category, name, price, description, brand, discount, itemType);
+        else{
+            itemType = ItemType.Voucher;
+        }
+        Item newItem;
+        if(ItemType.Voucher == itemType)
+            newItem = new Voucher(category, name, price, description, brand, discount, itemType, price);
+        else
+            newItem = new Item(category, name, price, description, brand, discount, itemType);
+
         if(items.containsKey(category))
             items.get(category).add(newItem);
         else {
@@ -88,9 +97,6 @@ public class Catalog {
         }
     }
 
-    public void removeItem() {
-        // not completed yet
-    }
     public HashMap<String, ArrayList<Item>> getItems() {
         return items;
     }

@@ -12,7 +12,7 @@ public class SessionManager {
     public SessionManager() {
         currentCustomer = null;
     }
-    public static Customer getCurrentCustomer() {
+    public Customer getCurrentCustomer() {
         return currentCustomer;
     }
 

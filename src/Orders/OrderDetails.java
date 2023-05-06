@@ -14,8 +14,8 @@ public class OrderDetails {
 
     private int customerPhone;
 
-    OrderDetails(){
-        this.customerName = SessionManager.getCurrentCustomer().getUsername();
+    OrderDetails(String name){
+        this.customerName = name;
     }
 
     public float getFinalPrice() {

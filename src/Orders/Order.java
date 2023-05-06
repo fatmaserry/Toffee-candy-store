@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 
 public class Order {
-    private OrderDetails details = new OrderDetails(); // For Shipping Process
+    private OrderDetails details; // For Shipping Process
     private float totalPriceOfItems; // overallPrice stands for price before discounts
 
     private ArrayList<Voucher> usedVouchers;
@@ -21,11 +21,12 @@ public class Order {
     private Customer owner;
     private ArrayList<CartItem> items;
 
-    Order(ArrayList<CartItem> items, float totalPriceOfItems){
+    Order(ArrayList<CartItem> items, float totalPriceOfItems, Customer user){
         this.items = items;
         this.totalPriceOfItems = totalPriceOfItems;
-        this.owner = SessionManager.getCurrentCustomer();
+        this.owner = user;
         this.details.setFinalPrice(totalPriceOfItems);
+        details = new OrderDetails(user.getUsername());
     }
     public float getTotalPriceOfItems() {
         return totalPriceOfItems;
