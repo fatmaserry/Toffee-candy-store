@@ -6,7 +6,7 @@ import User.Customer;
 
 
 public class SessionManager {
-    private static Customer currentCustomer;
+    private Customer currentCustomer;
 
 
     public SessionManager() {

@@ -6,16 +6,16 @@ import java.util.Scanner;
 
 public class Application {
     private AuthenticationService authenticationService;
-    private SessionManager currentUser;
+    public SessionManager currentSession;
 
     public Application(){
         authenticationService = new AuthenticationService();
-        currentUser = new SessionManager();
+        currentSession = new SessionManager();
     }
 
     public Boolean login(String email, String password) {
         if(authenticationService.verifyLogin(email, password)){
-            currentUser.setCurrentCustomer(authenticationService.getCustomers().get(email));
+            currentSession.setCurrentCustomer(authenticationService.getCustomers().get(email));
             return true;
         }
         else{
@@ -34,7 +34,7 @@ public class Application {
         String email = in.nextLine();
         System.out.println("Enter Your New Password: ");
         String password = in.nextLine();
-        currentUser.getCurrentCustomer().setPassword(password);
+        currentSession.getCurrentCustomer().setPassword(password);
         return false;
     }
 
@@ -51,11 +51,11 @@ public class Application {
         this.authenticationService = authenticationService;
     }
 
-    public SessionManager getCurrentUser() {
-        return currentUser;
+    public SessionManager getCurrentSession() {
+        return currentSession;
     }
 
-    public void setCurrentUser(SessionManager currentUser) {
-        this.currentUser = currentUser;
+    public void setCurrentSession(SessionManager currentSession) {
+        this.currentSession = currentSession;
     }
 }

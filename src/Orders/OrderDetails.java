@@ -1,13 +1,23 @@
 package Orders;
+import App.Application;
+import App.SessionManager;
 
 import java.util.Date;
 
 public class OrderDetails {
-    private float finalPrice;
+    private float finalPrice; // finalPrice stands for the price after discount (if there is)
     private int orderID;
     private String customerName;
     private Date date;
     private orderStatus status;
+    private String Address;
+
+    private int customerPhone;
+
+    OrderDetails(){
+        this.customerName = SessionManager.getCurrentCustomer().getUsername();
+    }
+
     public float getFinalPrice() {
         return finalPrice;
     }
@@ -46,5 +56,21 @@ public class OrderDetails {
 
     public void setStatus(orderStatus status) {
         this.status = status;
+    }
+
+    public String getAddress() {
+        return Address;
+    }
+
+    public void setAddress(String address) {
+        Address = address;
+    }
+
+    public int getCustomerPhone() {
+        return customerPhone;
+    }
+
+    public void setCustomerPhone(int customerPhone) {
+        this.customerPhone = customerPhone;
     }
 }

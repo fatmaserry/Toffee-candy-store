@@ -11,11 +11,11 @@ public class GUI {
 
     public void showMenu() {
         while(true){
-            if(app.getCurrentUser().getCurrentCustomer() == null){
+            if(app.getCurrentSession().getCurrentCustomer() == null){
                 guestMenu();
             }
             else{
-                System.out.println("Welcome " + app.getCurrentUser().getCurrentCustomer().getUsername());
+                System.out.println("Welcome " + app.getCurrentSession().getCurrentCustomer().getUsername());
                 loginCustomerMenu();
             }
         }
@@ -31,7 +31,7 @@ public class GUI {
         int option = in.nextInt();
         switch (option){
             case 1:
-                app.getCurrentUser().setCurrentCustomer(null);
+                app.getCurrentSession().setCurrentCustomer(null);
                 break;
             case 2:
                 app.resetPassword();
