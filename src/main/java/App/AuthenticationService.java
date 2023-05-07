@@ -13,7 +13,7 @@ import java.util.Scanner;
 public class AuthenticationService {
     private Catalog catalog;
     private final HashMap<String, Customer> customers;
-    private final OTPConfirmationEmail emailSender = new OTPConfirmationEmail();
+    protected static OTPConfirmationEmail emailSender = new OTPConfirmationEmail();
     private ArrayList<Order> orders;
 
     public AuthenticationService() {

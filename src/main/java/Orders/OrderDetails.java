@@ -1,5 +1,7 @@
 package Orders;
 
+import User.Customer;
+
 import java.util.Date;
 
 public class OrderDetails {
@@ -7,15 +9,19 @@ public class OrderDetails {
     private static int id = 2345; // Initial value for the id, Increase with every order
     private final int orderID;
     private final String customerName;
-    private final Date date;
-    private orderStatus status;
-    private String Address;
-    private int customerPhone;
+    private Date date;
+    private orderStatus status = null;
+    private String address;
+    private int customerPhone = 0;
 
-    OrderDetails(String name){
-        this.customerName = name;
+    OrderDetails(Customer user){
+        this.customerName = user.getUsername();
         this.orderID = id++;
-        this.date= new Date();
+        this.address = user.getAddress();
+    }
+
+    public int getOrderID() {
+        return orderID;
     }
 
     public float getFinalPrice() {
@@ -28,6 +34,10 @@ public class OrderDetails {
 
     public String getCustomerName() {
         return customerName;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public Date getDate() {
@@ -43,11 +53,11 @@ public class OrderDetails {
     }
 
     public String getAddress() {
-        return Address;
+        return this.address;
     }
 
     public void setAddress(String address) {
-        Address = address;
+        this.address = address;
     }
 
     public int getCustomerPhone() {
@@ -58,7 +68,4 @@ public class OrderDetails {
         this.customerPhone = customerPhone;
     }
 
-    public int getOrderID() {
-        return orderID;
-    }
 }

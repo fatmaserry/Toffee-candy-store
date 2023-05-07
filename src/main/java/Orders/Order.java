@@ -4,6 +4,7 @@ import Cart.CartItem;
 import Products.*;
 import User.Customer;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -14,15 +15,15 @@ public class Order {
     private Payment paymentMethod;
     private ArrayList<Voucher> usedVouchers;
     private int usedLoyaltyPoints;
-    private final Customer owner;
+    private Customer owner;
     private ArrayList<CartItem> items;
 
     Order(ArrayList<CartItem> items, float totalPriceOfItems, Customer user) {
         this.items = items;
         this.totalPriceOfItems = totalPriceOfItems;
         this.owner = user;
-        details = new OrderDetails(user.getUsername());
-        this.details.setFinalPrice(totalPriceOfItems);
+        details = new OrderDetails(user);
+        details.setFinalPrice(totalPriceOfItems);
     }
 
     public float getTotalPriceOfItems() {
@@ -117,16 +118,69 @@ public class Order {
                 System.out.println("Wrong OTP! Please Try Again.");
                 payment();
             } else {
+                details.setCustomerPhone(phone);
                 paymentMethod = new CashOnDelivery(phone, details.getFinalPrice());
+                System.out.println("Total price: " + details.getFinalPrice());
+                System.out.println("Payment Method: " + paymentMethod.getPayMethod());
                 details.setStatus(orderStatus.In_Process);
-                System.out.println("Confirmed! your order is in");
+                System.out.println("Confirmed! your order is in process.");
             }
         }
     }
 
-    public void placeOrder(){
-        System.out.println("To ");
+    public void placeOrder(Order order){
+        System.out.println("To confirm the order, Please choose the shipping address: \n" +
+                "1. Your Address: " + order.details.getAddress() + "\n"+
+                "2. New Address");
+        Scanner in = new Scanner(System.in);
+        int choice = in.nextInt();
+        if( choice == 2 ){
+            System.out.println("Enter the address: ");
+            String new_address = in.nextLine();
+            order.details.setAddress(new_address);
+            order.details.setStatus(orderStatus.Out_to_delivery);
+            order.details.setDate(new Date());
+            owner.addOrder(order);
+            System.out.println("Thank you, the delivery address has been set!" +
+                    " Waiting for your opinion of our products.");
+        }
     }
 
+    public void displayOrderDetails(Order order){
+        System.out.println("Order ID: " + order.details.getOrderID());
+        System.out.println("Total price: " + order.details.getFinalPrice());
+        System.out.println("Shipping Address: " + order.details.getAddress());
+        if(order.details.getStatus() != null){
+            System.out.println("Order Status: " + order.details.getStatus());
+        }
+        if(order.details.getStatus() != orderStatus.In_Process) {
+            System.out.println("Created Date: " + order.details.getDate());
+        }
+        if (order.details.getCustomerPhone() != 0) {
+            System.out.println("Date: " + order.details.getDate());
+        }
+    }
+    public void changeAddress(String address) {
+        details.setAddress(address);
+    }
+    public void reorder(Order order) {
+
+    }
+    public void cancelOrder(Order order) {
+        Date current_date = new Date();
+        int different = current_date.getHours() - order.details.getDate().getHours();
+        if (different < 0) different*=-1;
+        if(different <= 24){
+            order.details.setStatus(orderStatus.Cancelled);
+            System.out.println("Order is cancelled.");
+        }
+        else{
+            System.out.println("Couldn't cancel this order.");
+        }
+    }
+
+    public void displayMenu(){
+
+    }
 
 }

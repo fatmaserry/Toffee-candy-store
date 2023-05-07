@@ -32,15 +32,25 @@ public class Application {
         Scanner in = new Scanner(System.in);
         System.out.println("Enter Your Email: ");
         String email = in.nextLine();
-        System.out.println("Enter Your New Password: ");
-        String password = in.nextLine();
-        currentSession.getCurrentCustomer().setPassword(password);
-        return false;
-    }
 
-    public Boolean confirmOTP(int otp){
-        // not completed yet
-        return true;
+        String otp = AuthenticationService.emailSender.OTPGenerator();
+        if (AuthenticationService.emailSender.sendOTP(
+                currentSession.getCurrentCustomer().getUsername(),
+                currentSession.getCurrentCustomer().getEmail(), otp,"ResetPass")) {
+            System.out.println("To reset password, Please check your email.\n" +
+                    "Enter the OTP here: ");
+            String entered_otp = in.nextLine();
+            if (!entered_otp.equals(otp)) {
+                System.out.println("Wrong OTP! Please Try Again.");
+                return false;
+            } else {
+                System.out.println("Enter Your New Password: ");
+                String password = in.nextLine();
+                currentSession.getCurrentCustomer().setPassword(password);
+                return true;
+            }
+        }
+        return false;
     }
 
     public AuthenticationService getAuthenticationService() {

@@ -64,6 +64,15 @@ public class OTPConfirmationEmail {
                         " We appreciate your business and look forward to serving you again soon.\n\n" +
                         "Toffee Store Team";
             }
+            else if (typeOfConfirmation.equals("ResetPass")){
+                message.setSubject("Welcome to Toffee Store! Confirm Your Reset Password Request with OTP");
+                msg = "Dear " + curr_user + "," +
+                        "\n" +
+                        "Please use the following OTP to verify your account: " + otp +
+                        "\n\nThank you for choosing Toffee Store for your sweet cravings." +
+                        " We appreciate your business and look forward to serving you again soon.\n\n" +
+                        "Toffee Store Team";
+            }
             message.setText(msg);
             Transport.send(message);
             flag = true;
