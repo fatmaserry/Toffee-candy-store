@@ -1,11 +1,16 @@
 package App;
 
+import Cart.ShoppingCart;
+
 import java.util.Scanner;
 
 public class GUI {
     private Application app;
+
+    private ShoppingCart cart;
     public GUI(){
         app = new Application();
+        cart= new ShoppingCart();
         showMenu();
     }
 
@@ -37,10 +42,13 @@ public class GUI {
                 app.resetPassword();
                 break;
             case 3:
-                app.getAuthenticationService().getCatalog().filterByCategory();
-                // add items to cart
+                app.getAuthenticationService().getCatalog().filterByCategory();  //print catalog
+                cart.addItemToCart(app.getAuthenticationService().getCatalog().getItems()); //add item to cart
+                cart.printCartDetails();  //add item to cart
                 break;
             case 4:
+                cart.printCartDetails();
+
                 // need the cart to be implemented
                 break;
             default:

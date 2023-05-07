@@ -10,16 +10,14 @@ public class ShoppingCart{
     private int quantity;
     private float overallPrice;
     private CartItem cartItem;
-    private Catalog catalog;
 
 
 
     private ArrayList<Item> listOfCartItems = new ArrayList<>(); //to store added items by user in it
 
 
-    ShoppingCart() {
+    public ShoppingCart() {
         cartItem = new CartItem();
-        catalog = new Catalog();
     }
 
     public int getQuantity(){
@@ -37,10 +35,10 @@ public class ShoppingCart{
         overallPrice=p;
     }
 
-    public void addItemToCart() {
+    public void addItemToCart( HashMap<String, ArrayList<Item>> catalogItems) {
 
         // to get the map of items from catalog
-        HashMap<String, ArrayList<Item>> itemMap = catalog.getItems();
+        HashMap<String, ArrayList<Item>> itemMap = catalogItems;
 
         // to store all items from map in it
         ArrayList<Item> listOfItems = new ArrayList<>();
@@ -61,10 +59,13 @@ public class ShoppingCart{
                 // if entered id is valid then add item to cart item list
                 listOfCartItems.add(item);
                 check = true;
+
             }
         }
         if (!check){
             System.out.println("Invalid item id\n");
+        }else{
+            System.out.println("Item added successfully\n");
         }
 
     }
@@ -74,16 +75,16 @@ public class ShoppingCart{
         Scanner in = new Scanner(System.in);
         int id = in.nextInt();
         boolean check = false;
-        for (Item listOfCartItem : listOfCartItems) {
-            // if entered id equals id in cart item
-            if(id == listOfCartItem.getItemId()) {
-                // remove cart item
-                listOfCartItems.remove(listOfCartItem);
-                check = true;
+        for(int i=0; i<listOfCartItems.size();i++){
+            if(id==listOfCartItems.get(i).getItemId()){  //if entered id equals id in cart item
+                listOfCartItems.remove(i);               //then remove cart item
+                check=true;
             }
         }
         if(!check){
             System.out.println("Invalid id or the item is not in cart.");
+        }else{
+            System.out.println("item removed successfully\n");
         }
     }
 
