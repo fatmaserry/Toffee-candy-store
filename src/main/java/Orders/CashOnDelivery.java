@@ -3,7 +3,7 @@ package Orders;
 import java.util.Scanner;
 
 public class CashOnDelivery extends Payment{
-    private int phoneNumber;
+    private int phoneNumber = 0;
 
     CashOnDelivery(int phone, float price){
         super();
@@ -11,7 +11,6 @@ public class CashOnDelivery extends Payment{
         setPayMethod("CashOnDelivery");
         this.phoneNumber = phone;
     }
-
 
     public int getPhoneNumber() {
         return phoneNumber;

@@ -30,11 +30,11 @@ public class AuthenticationService {
 
     public Boolean verifyRegister(Customer customer) {
         if (!customers.containsKey(customer.getEmail())) {
-            String otp = emailSender.OTPGenerator();
 
-            if (emailSender.sendOTP(customer.getUsername(), customer.getEmail(), otp)) {
-                System.out.println("To confirm registeration, Please check your email." +
-                        " and Enter the OTP Here: ");
+            String otp = emailSender.OTPGenerator();
+            if (emailSender.sendOTP(customer.getUsername(), customer.getEmail(), otp,"Register")) {
+                System.out.println("To confirm registeration, Please check your email.\n" +
+                        "Enter the OTP here: ");
                 Scanner in = new Scanner(System.in);
                 String entered_otp = in.nextLine();
                 if (!entered_otp.equals(otp)) {
@@ -68,5 +68,9 @@ public class AuthenticationService {
 
     public void setOrders(ArrayList<Order> orders) {
         this.orders = orders;
+    }
+
+    public static OTPConfirmationEmail getEmailSender() {
+        return emailSender;
     }
 }

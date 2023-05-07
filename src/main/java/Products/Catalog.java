@@ -13,7 +13,7 @@ public class Catalog {
     public Catalog() {
         items = new HashMap<>();
         try{
-            File myItems = new File("E:\\Desktop\\SoftwareEngineering1-ToffeeStore\\src\\main\\java\\items.txt");
+            File myItems = new File("E:\\Desktop\\Assests\\SoftwareEngineering1-ToffeeStore\\src\\main\\java\\items.txt");
             Scanner reader = new Scanner(myItems);
             int cnt = 1;
             String category = "", name = "",description = "", brand = "", type = "";
