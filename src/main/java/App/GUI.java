@@ -18,6 +18,7 @@ public class GUI {
         while(true){
             if(app.getCurrentSession().getCurrentCustomer() == null){
                 guestMenu();
+
             }
             else{
                 System.out.println("Welcome " + app.getCurrentSession().getCurrentCustomer().getUsername());
@@ -44,12 +45,11 @@ public class GUI {
             case 3:
                 app.getAuthenticationService().getCatalog().filterByCategory();  //print catalog
                 cart.addItemToCart(app.getAuthenticationService().getCatalog().getItems()); //add item to cart
-                cart.printCartDetails();  //add item to cart
+                cart.printCartDetails();  //print cart details
                 break;
             case 4:
                 cart.printCartDetails();
 
-                // need the cart to be implemented
                 break;
             default:
                 break;

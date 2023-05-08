@@ -9,16 +9,13 @@ import java.util.Scanner;
 public class ShoppingCart{
     private int quantity;
     private float overallPrice;
-    private CartItem cartItem;
+
+    //to store class of cart items that the user adds to cart
+    private ArrayList<CartItem> listOfClassCartItem= new ArrayList<>();
 
 
 
-    private ArrayList<Item> listOfCartItems = new ArrayList<>(); //to store added items by user in it
-
-
-    public ShoppingCart() {
-        cartItem = new CartItem();
-    }
+    public ShoppingCart() {}
 
     public int getQuantity(){
         return quantity;
@@ -53,15 +50,15 @@ public class ShoppingCart{
         int id = in.nextInt();
         boolean check = false;
 
-        // checking for entered id in the items
-        for (Item item : listOfItems) {
-            if (id == item.getItemId()) {
+        for(int i=0; i<listOfItems.size();i++){
+            if(id==listOfItems.get(i).getItemId()){
                 // if entered id is valid then add item to cart item list
-                listOfCartItems.add(item);
-                check = true;
-
+                CartItem cartItem=new CartItem(listOfItems.get(i));
+                listOfClassCartItem.add(cartItem);
+                check=true;
             }
         }
+
         if (!check){
             System.out.println("Invalid item id\n");
         }else{
@@ -70,27 +67,33 @@ public class ShoppingCart{
 
     }
 
-    public void removeItemFromCart(){
-        System.out.println("Enter item id: ");
-        Scanner in = new Scanner(System.in);
-        int id = in.nextInt();
-        boolean check = false;
-        for(int i=0; i<listOfCartItems.size();i++){
-            if(id==listOfCartItems.get(i).getItemId()){  //if entered id equals id in cart item
-                listOfCartItems.remove(i);               //then remove cart item
-                check=true;
+    public void removeItemFromCart() {
+        if (listOfClassCartItem.size() == 0) {
+            System.out.println("Your cart is empty.\n");
+        } else {
+            System.out.println("Enter item id: ");
+            Scanner in = new Scanner(System.in);
+            int id = in.nextInt();
+            boolean check = false;
+            for (int i = 0; i < listOfClassCartItem.size(); i++) {
+                if (id == listOfClassCartItem.get(i).getItem().getItemId()) {
+                    // if entered id is valid then add item to cart item list
+                    listOfClassCartItem.remove(i);
+                    check = true;
+                }
             }
-        }
-        if(!check){
-            System.out.println("Invalid id or the item is not in cart.");
-        }else{
-            System.out.println("item removed successfully\n");
+
+            if (!check) {
+                System.out.println("Invalid id or the item is not in cart.");
+            } else {
+                System.out.println("item removed successfully\n");
+            }
         }
     }
 
     public void printCartDetails(){
-        for (Item listOfCartItem : listOfCartItems) {
-            listOfCartItem.printItem();
+        for (int i=0;i<listOfClassCartItem.size();i++){
+            listOfClassCartItem.get(i).getItem().printItem();
         }
     }
 }
