@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class Application {
     private AuthenticationService authenticationService;
-    public SessionManager currentSession;
+    protected SessionManager currentSession;
 
     public Application(){
         authenticationService = new AuthenticationService();
@@ -60,11 +60,9 @@ public class Application {
     public void setAuthenticationService(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
     }
-
     public SessionManager getCurrentSession() {
-        return currentSession;
+       return currentSession;
     }
-
     public void setCurrentSession(SessionManager currentSession) {
         this.currentSession = currentSession;
     }

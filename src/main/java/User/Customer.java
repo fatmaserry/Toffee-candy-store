@@ -17,9 +17,10 @@ public class Customer {
     private ShoppingCart cart;
 
     // HashMap<code,Voucher>
-    private HashMap<String,Voucher> vouchers;
+    private HashMap<Integer,Voucher> vouchers;
+
     public Customer() {
-        orders = new ArrayList<>();
+        this.orders = new ArrayList<>();
     }
     public Customer(String name, String email, String password, String address){
         orders = new ArrayList<>();
@@ -27,6 +28,7 @@ public class Customer {
         this.email = email;
         this.password = password;
         this.address = address;
+        this.cart = new ShoppingCart(this);
     }
 
     public void updateProfile() {
@@ -38,11 +40,11 @@ public class Customer {
 
     }
 
-    public void addVoucher(String code,Voucher voucher) {
+    public void addVoucher(int code,Voucher voucher) {
         vouchers.put(code,voucher);
     }
 
-    public HashMap<String,Voucher> getVouchers(){
+    public HashMap<Integer,Voucher> getVouchers(){
         return vouchers;
     }
 

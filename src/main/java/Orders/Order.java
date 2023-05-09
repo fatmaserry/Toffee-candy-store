@@ -3,6 +3,7 @@ import App.*;
 import Cart.CartItem;
 import Products.*;
 import User.Customer;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -18,12 +19,14 @@ public class Order {
     private Customer owner;
     private ArrayList<CartItem> items;
 
-    Order(ArrayList<CartItem> items, float totalPriceOfItems, Customer user) {
+    public Order(ArrayList<CartItem> items, float totalPriceOfItems, Customer user) {
         this.items = items;
         this.totalPriceOfItems = totalPriceOfItems;
         this.owner = user;
-        details = new OrderDetails(user);
-        details.setFinalPrice(totalPriceOfItems);
+        this.paymentMethod = null;
+        this.usedVouchers = null;
+        this.usedLoyaltyPoints = 0;
+        details = new OrderDetails(user,totalPriceOfItems);
     }
 
     public float getTotalPriceOfItems() {
@@ -62,8 +65,34 @@ public class Order {
         return usedLoyaltyPoints;
     }
 
-    public Boolean redeemVoucher(String codeOfVoucher) {
-        HashMap<String, Voucher> curr_vouchers = owner.getVouchers();
+    public void redeemVoucher() {
+        HashMap<Integer, Voucher> curr_vouchers = owner.getVouchers();
+
+        // If customer has no vouchers
+        if (curr_vouchers == null) {
+            System.out.println("You have not any vouchers!");
+            return;
+        }
+        System.out.println("      --------YOUR VOUCHERS---------");
+        for (Integer s : curr_vouchers.keySet()) {
+            curr_vouchers.get(s).printItem();
+            System.out.println("Voucher Code: " + curr_vouchers.get(s).getVoucherCode());
+            System.out.println("--------------------------------------------------------");
+        }
+
+        System.out.println("Enter code of voucher: ");
+        Scanner in = new Scanner(System.in);
+        int codeOfVoucher = in.nextInt();
+
+        // Enter a wrong code
+        for (int s : curr_vouchers.keySet()) {
+            if (curr_vouchers.get(s).getVoucherCode() != codeOfVoucher) {
+                System.out.println("Wrong Code. Try Again");
+                return;
+            }
+        }
+
+        // Enter a correct code
         Voucher used_voucher = curr_vouchers.get(codeOfVoucher);
 
         // If codeOfVoucher exists
@@ -71,18 +100,29 @@ public class Order {
             // Add the used voucher
             usedVouchers.add(used_voucher);
 
+            // Delete used voucher from user
+            owner.getVouchers().remove(codeOfVoucher);
+
             // Update the final price after applying the discount of Voucher
             details.setFinalPrice(
                     details.getFinalPrice() - used_voucher.getDiscount());
 
-            return true;
-        }
-        else{
-            return false;
+            System.out.println("Done! you got a discount");
         }
     }
 
-    public Boolean redeemLoyaltyPoints(int numOfPoints) {
+    public void redeemLoyaltyPoints() {
+
+        // If customer hasn't loyalty points
+        if (owner.getLoyaltyPoints() == 0) {
+            System.out.println("You have not loyalty points to use!");
+            return;
+        }
+        System.out.println("Your loyalty points: " + owner.getLoyaltyPoints());
+        System.out.println("Enter the : " + owner.getLoyaltyPoints());
+
+        Scanner in = new Scanner(System.in);
+        int numOfPoints = in.nextInt();
 
         // Check if there are enough loyalty points
         if (numOfPoints <= owner.getLoyaltyPoints()) {
@@ -93,42 +133,59 @@ public class Order {
             owner.setLoyaltyPoints(owner.getLoyaltyPoints() - numOfPoints);
 
             // Update the final price after applying the discount of points
+            // As one point = one pound
             details.setFinalPrice(details.getFinalPrice() - numOfPoints);
-
-            return true;
         }
         else
         {
-            return false;
+            System.out.println("No enough loyalty points");
         }
     }
 
-    public void payment() {
+    public boolean payment() {
         Scanner in = new Scanner(System.in);
         System.out.println("Enter your phone number: ");
-        int phone = in.nextInt();
+        String phone = in.nextLine();
 
+        // regex to check validation of phone number
+        String regex = "^01?[0125][0-9]{8}$";
+        if (!phone.matches(regex)) {
+            System.out.println("Phone number is invalid. Try again");
+            return false;
+        }
+
+        // Confirm payment with email address
         String otp = AuthenticationService.getEmailSender().OTPGenerator();
         if (AuthenticationService.getEmailSender().sendOTP(
                 owner.getUsername(), owner.getEmail(), otp, "ConfirmPhone")) {
             System.out.println("To complete the process, Please check your email.");
             System.out.print("Enter the OTP here: ");
             String entered_otp = in.nextLine();
+
+            // if customer enter a wrong otp
             if (!entered_otp.equals(otp)) {
                 System.out.println("Wrong OTP! Please Try Again.");
-                payment();
-            } else {
-                details.setCustomerPhone(phone);
-                paymentMethod = new CashOnDelivery(phone, details.getFinalPrice());
-                System.out.println("Total price: " + details.getFinalPrice());
-                System.out.println("Payment Method: " + paymentMethod.getPayMethod());
+                return false;
+
+            }
+            else {
+                // set the phone number
+                details.setCustomerPhone(Integer.parseInt(phone));
+
+                // create a cash on delivery object
+                paymentMethod = new CashOnDelivery(Integer.parseInt(phone), details.getFinalPrice());
+
+                // change the status of order to be in process
                 details.setStatus(orderStatus.In_Process);
                 System.out.println("Confirmed! your order is in process.");
+                return true;
             }
         }
+        System.out.println("There is a problem, Please try again");
+        return false;
     }
 
-    public void placeOrder(Order order){
+    public boolean placeOrder(Order order){
         System.out.println("To confirm the order, Please choose the shipping address: \n" +
                 "1. Your Address: " + order.details.getAddress() + "\n"+
                 "2. New Address");
@@ -142,30 +199,62 @@ public class Order {
             order.details.setDate(new Date());
             owner.addOrder(order);
             System.out.println("Thank you, the delivery address has been set!" +
-                    " Waiting for your opinion of our products.");
+                    "\nWaiting for your opinion of our products.");
+
+            return true;
+        }else{
+            System.out.println("Invalid option. Try again");
+            return false;
         }
     }
 
     public void displayOrderDetails(Order order){
+        System.out.println("\n\n-------------------------------------------------");
         System.out.println("Order ID: " + order.details.getOrderID());
-        System.out.println("Total price: " + order.details.getFinalPrice());
+
+        // If customer got a discount
+        if ( order.details.getFinalPrice() > order.totalPriceOfItems){
+            System.out.println("Total price before discount: " + order.totalPriceOfItems);
+            System.out.println("Total price after discount: " + order.details.getFinalPrice());
+        }
+        else {
+            System.out.println("Total price: " + order.details.getFinalPrice());
+        }
+
+        // print shipping address
         System.out.println("Shipping Address: " + order.details.getAddress());
+
+        // If status of order changed
         if(order.details.getStatus() != null){
             System.out.println("Order Status: " + order.details.getStatus());
         }
-        if(order.details.getStatus() != orderStatus.In_Process) {
+
+        // if ordered is confirmed so its date is assigned
+        if(order.details.getDate() != null) {
             System.out.println("Created Date: " + order.details.getDate());
         }
+
+        // if customer sets his/her phone number
         if (order.details.getCustomerPhone() != 0) {
-            System.out.println("Date: " + order.details.getDate());
+            System.out.println("Phone: " + order.details.getCustomerPhone());
         }
-    }
-    public void changeAddress(String address) {
-        details.setAddress(address);
-    }
-    public void reorder(Order order) {
+
+        // if payment process is done
+        if (order.paymentMethod != null){
+            System.out.println("Payment Method: " + paymentMethod.getPayMethod());
+        }
+        System.out.println("-------------------------------------------------\n\n");
 
     }
+    public void changeAddress(){
+        System.out.println("Enter your new address: ");
+        Scanner in = new Scanner(System.in);
+        String address = in.nextLine();
+        details.setAddress(address);
+        System.out.println("The address has been set successfully");
+    }
+
+
     public void cancelOrder(Order order) {
         Date current_date = new Date();
         int different = current_date.getHours() - order.details.getDate().getHours();
@@ -175,12 +264,61 @@ public class Order {
             System.out.println("Order is cancelled.");
         }
         else{
-            System.out.println("Couldn't cancel this order.");
+            System.out.println("You can't cancel this order." +
+                    "\nIt's been 24 hours since you ordered it");
         }
     }
 
-    public void displayMenu(){
-
+    public void displayMenu(Order pending_order){
+        boolean flag = true;
+        while (flag){
+            displayOrderDetails(pending_order);
+            System.out.println("Choose the number of the option you want: ");
+            System.out.println("1-Redeem Vouchers");
+            System.out.println("2-Redeem Loyalty Points");
+            System.out.println("3-Payment");
+            System.out.println("4-Cancel order");
+            Scanner in = new Scanner(System.in);
+            int option = in.nextInt();
+            switch(option){
+                case 1:
+                    pending_order.redeemVoucher();
+                    break;
+                case 2:
+                    pending_order.redeemLoyaltyPoints();
+                    break;
+                case 3:
+                    if (pending_order.payment()) {
+                        // if payment and placeOrder process are done
+                        // then clear the shopping cart
+                        // and break the while loop (ORDER CONFIRMED)
+                        if (pending_order.placeOrder(pending_order)) {
+                            owner.getCart().clearListOfClassCartItem();
+                            flag = false;
+                        }
+                    }
+                    break;
+                case 4:
+                    if( usedVouchers != null ){
+                        // return the used vouchers
+                        for (Voucher i : usedVouchers){
+                            owner.getVouchers().put(i.getVoucherCode(),i);
+                        }
+                    }
+                    if ( usedLoyaltyPoints != 0){
+                        // return the used loyalty points
+                        owner.setLoyaltyPoints(owner.getLoyaltyPoints() + usedLoyaltyPoints);
+                    }
+                    // break while loop
+                    flag = false;
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
+//        public void reorder(Order order) {
+//
+//    }
 }

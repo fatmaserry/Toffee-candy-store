@@ -7,8 +7,6 @@ import User.Customer;
 
 public class SessionManager {
     private Customer currentCustomer;
-
-
     public SessionManager() {
         currentCustomer = null;
     }

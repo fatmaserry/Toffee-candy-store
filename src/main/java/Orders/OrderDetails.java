@@ -9,15 +9,16 @@ public class OrderDetails {
     private static int id = 2345; // Initial value for the id, Increase with every order
     private final int orderID;
     private final String customerName;
-    private Date date;
+    private Date date = null;
     private orderStatus status = null;
     private String address;
     private int customerPhone = 0;
 
-    OrderDetails(Customer user){
+    OrderDetails(Customer user, float totalPriceOfItems){
         this.customerName = user.getUsername();
         this.orderID = id++;
         this.address = user.getAddress();
+        this.finalPrice = totalPriceOfItems;
     }
 
     public int getOrderID() {

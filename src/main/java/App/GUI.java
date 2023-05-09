@@ -1,27 +1,26 @@
 package App;
 
 import Cart.ShoppingCart;
+import Orders.Order;
 
 import java.util.Scanner;
 
 public class GUI {
     private Application app;
 
-    private ShoppingCart cart;
     public GUI(){
         app = new Application();
-        cart= new ShoppingCart();
         showMenu();
     }
 
     public void showMenu() {
         while(true){
-            if(app.getCurrentSession().getCurrentCustomer() == null){
+            if(app.currentSession.getCurrentCustomer() == null){
                 guestMenu();
 
             }
             else{
-                System.out.println("Welcome " + app.getCurrentSession().getCurrentCustomer().getUsername());
+                System.out.println("Welcome " + app.currentSession.getCurrentCustomer().getUsername());
                 loginCustomerMenu();
             }
         }
@@ -37,19 +36,35 @@ public class GUI {
         int option = in.nextInt();
         switch (option){
             case 1:
-                app.getCurrentSession().setCurrentCustomer(null);
+                app.currentSession.setCurrentCustomer(null);
                 break;
             case 2:
                 app.resetPassword();
                 break;
             case 3:
                 app.getAuthenticationService().getCatalog().filterByCategory();  //print catalog
-                cart.addItemToCart(app.getAuthenticationService().getCatalog().getItems()); //add item to cart
-                cart.printCartDetails();  //print cart details
+                app.currentSession.getCurrentCustomer().getCart()
+                        .addItemToCart(app.getAuthenticationService().getCatalog().getItems()); //add item to cart
                 break;
             case 4:
-                cart.printCartDetails();
-
+                app.currentSession.getCurrentCustomer().getCart().printCartDetails();//print cart details
+                // if cart is not empty
+                if ( app.currentSession.getCurrentCustomer().getCart().getQuantity() != 0) {
+                    System.out.println("Choose the number of the option you want: ");
+                    System.out.println("1-Checkout");
+                    System.out.println("2-Back to menu");
+                    int opt = in.nextInt();
+                    switch (opt) {
+                        case 1:
+                            Order pending_Order
+                                    = app.currentSession.getCurrentCustomer()
+                                    .getCart().checkout();
+                            pending_Order.displayMenu(pending_Order);
+                            break;
+                        case 2:
+                            break;
+                    }
+                }
                 break;
             default:
                 break;
