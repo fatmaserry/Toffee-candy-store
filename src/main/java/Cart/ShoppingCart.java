@@ -35,6 +35,7 @@ public class ShoppingCart{
     public ShoppingCart(Customer user) {
         this.listOfClassCartItem = new ArrayList<CartItem>();
         this.quantity = 0;
+        this.overallPrice=0;
         this.owner = user;
     }
     public void addItemToCart( HashMap<String, ArrayList<Item>> catalogItems ) {
@@ -51,7 +52,7 @@ public class ShoppingCart{
         }
 
         System.out.println("Choose the number of the option you want: ");
-        System.out.println("1-Add item to cart");
+        System.out.println("1-Add to cart");
         System.out.println("2-Back to menu");
         Scanner in = new Scanner(System.in);
         int option = in.nextInt();
@@ -59,21 +60,38 @@ public class ShoppingCart{
         if ( option == 1 ) {
             System.out.println("Enter item id: ");
             int id = in.nextInt();
+
             boolean check = false;
 
             for (int i = 0; i < listOfItems.size(); i++) {
                 if (id == listOfItems.get(i).getItemId()) {
+                    check = true;
+
+                    ItemType Loose=ItemType.Loose;  //sold by weight
+                    ItemType Sealed=ItemType.Sealed; //sold by item
+
+                    if(listOfItems.get(i).getType()==Loose){
+                        System.out.println("Enter how many kilos do you want to buy.\n");
+                    }else if(listOfItems.get(i).getType()==Sealed){
+                        System.out.println("Enter how many items do you want to buy.\n");
+                    }else{
+                        System.out.println("Enter how many vouchers do you want to buy.\n");
+                    }
+                    int quantity = in.nextInt();
+                    //checking if entered quantity is valid
+                    while (quantity<=0 || quantity>50){
+                        System.out.println("Invalid quantity, Try again .\n");
+                        quantity = in.nextInt();
+                    }
                     // if entered id is valid then add item to cart item list
-                    CartItem cartItem = new CartItem(listOfItems.get(i));
+                    CartItem cartItem = new CartItem(listOfItems.get(i),quantity);
                     owner.getCart().getListOfClassCartItem().add(cartItem);
 
-                    // add to overall price the unit price
-                    owner.getCart().setOverallPrice(owner.getCart().getOverallPrice() +
-                            listOfItems.get(i).getUnitPrice());
+                    // add to overall price the total price in cartItem
+                    owner.getCart().setOverallPrice(owner.getCart().getOverallPrice() + cartItem.getTotalPrice());
 
                     // Increase the quantity
                     owner.getCart().setQuantity(owner.getCart().getQuantity()+1);
-                    check = true;
                 }
             }
             if (!check){
@@ -98,14 +116,13 @@ public class ShoppingCart{
                 if (id == owner.getCart().getListOfClassCartItem().get(i).getItem().getItemId()) {
 
                     // firstly decrease from overall price the unit price
-                    owner.getCart().overallPrice +=
-                            owner.getCart().getListOfClassCartItem().get(i).getItem().getUnitPrice();
+                    owner.getCart().overallPrice -= owner.getCart().getListOfClassCartItem().get(i).getTotalPrice();
 
-                    // if entered id is valid then add item to cart item list
+                    // if entered id is valid then remove cart item from cart item list
                     owner.getCart().getListOfClassCartItem().remove(i);
 
                     // decrease the quantity of shopping cart
-                    owner.getCart().setQuantity(owner.getCart().getQuantity()+1);
+                    owner.getCart().setQuantity(owner.getCart().getQuantity()-1);
                     check = true;
                 }
             }
@@ -117,6 +134,10 @@ public class ShoppingCart{
         }
     }
 
+    //This function needs to be modified
+    // We need to print the overall price per item in Item cart
+    //We need to print the quantity of each item in cart
+    //Then we need to print at last the quantity and the total price of the whole shopping cart
     public void printCartDetails(){
         System.out.println("        -------CART------");
         if ( owner.getCart().getQuantity() == 0 ){

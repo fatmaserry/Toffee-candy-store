@@ -52,7 +52,8 @@ public class GUI {
                 if ( app.currentSession.getCurrentCustomer().getCart().getQuantity() != 0) {
                     System.out.println("Choose the number of the option you want: ");
                     System.out.println("1-Checkout");
-                    System.out.println("2-Back to menu");
+                    System.out.println("2-Remove item from cart");
+                    System.out.println("3-Back to menu");
                     int opt = in.nextInt();
                     switch (opt) {
                         case 1:
@@ -62,6 +63,10 @@ public class GUI {
                             pending_Order.displayMenu(pending_Order);
                             break;
                         case 2:
+                            app.currentSession.getCurrentCustomer().getCart().removeItemFromCart(); //remove item form cart
+                            app.currentSession.getCurrentCustomer().getCart().printCartDetails(); //print cart details after item is removed
+                            break;
+                        case 3:
                             break;
                     }
                 }
