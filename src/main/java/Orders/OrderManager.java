@@ -4,6 +4,7 @@ import App.AuthenticationService;
 import App.GUI;
 import Cart.CartItem;
 import Orders.Order;
+import Products.Item;
 import Products.Voucher;
 import User.Customer;
 import java.util.ArrayList;
@@ -13,19 +14,20 @@ import static App.AuthenticationService.*;
 
 public class OrderManager {
     Order order;
-    public void createOrder(ArrayList<CartItem> cartItems, float totalPriceOfItems, Customer owner){
-        this.order = new Order(cartItems,totalPriceOfItems,owner);
+
+    public void createOrder(ArrayList<CartItem> cartItems, float totalPriceOfItems, Customer owner) {
+        this.order = new Order(cartItems, totalPriceOfItems, owner);
     }
-    public void displayOrderDetails(){
+
+    public void displayOrderDetails() {
         System.out.println("\n\n-------------------------------------------------");
         System.out.println("Order ID: " + order.getDetails().getOrderID());
 
         // If customer got a discount
-        if ( order.getDetails().getFinalPrice() > order.getTotalPriceOfItems()){
+        if (order.getDetails().getFinalPrice() > order.getTotalPriceOfItems()) {
             System.out.println("Total price before discount: " + order.getTotalPriceOfItems());
             System.out.println("Total price after discount: " + order.getDetails().getFinalPrice());
-        }
-        else {
+        } else {
             System.out.println("Total price: " + order.getDetails().getFinalPrice());
         }
 
@@ -33,12 +35,12 @@ public class OrderManager {
         System.out.println("Shipping Address: " + order.getDetails().getAddress());
 
         // If status of order changed
-        if(order.getDetails().getStatus() != null){
+        if (order.getDetails().getStatus() != null) {
             System.out.println("Order Status: " + order.getDetails().getStatus());
         }
 
         // if ordered is confirmed so its date is assigned
-        if(order.getDetails().getDate() != null) {
+        if (order.getDetails().getDate() != null) {
             System.out.println("Created Date: " + order.getDetails().getDate());
         }
 
@@ -48,21 +50,61 @@ public class OrderManager {
         }
 
         // if payment process is done
-        if (order.getPaymentMethod() != null){
+        if (order.getPaymentMethod() != null) {
             System.out.println("Payment Method: " + order.getPaymentMethod().getPayMethod());
         }
         System.out.println("-------------------------------------------------\n\n");
 
     }
-    public void displayMenu(){
+
+    // overload of displayOrderDetails()
+    public void displayOrderDetails(Order order) {
+        System.out.println("\n\n-------------------------------------------------");
+        System.out.println("Order ID: " + order.getDetails().getOrderID());
+
+        // If customer got a discount
+        if (order.getDetails().getFinalPrice() > order.getTotalPriceOfItems()) {
+            System.out.println("Total price before discount: " + order.getTotalPriceOfItems());
+            System.out.println("Total price after discount: " + order.getDetails().getFinalPrice());
+        } else {
+            System.out.println("Total price: " + order.getDetails().getFinalPrice());
+        }
+
+        // print shipping address
+        System.out.println("Shipping Address: " + order.getDetails().getAddress());
+
+        // If status of order changed
+        if (order.getDetails().getStatus() != null) {
+            System.out.println("Order Status: " + order.getDetails().getStatus());
+        }
+
+        // if ordered is confirmed so its date is assigned
+        if (order.getDetails().getDate() != null) {
+            System.out.println("Created Date: " + order.getDetails().getDate());
+        }
+
+        // if customer sets his/her phone number
+        if (order.getDetails().getCustomerPhone() != 0) {
+            System.out.println("Phone: " + order.getDetails().getCustomerPhone());
+        }
+
+        // if payment process is done
+        if (order.getPaymentMethod() != null) {
+            System.out.println("Payment Method: " + order.getPaymentMethod().getPayMethod());
+        }
+        System.out.println("-------------------------------------------------\n\n");
+
+    }
+
+    public void displayMenu() {
         boolean flag = true;
-        while (flag){
+        while (flag) {
             displayOrderDetails();
             System.out.println("Choose the number of the option you want: ");
             System.out.println("1-Redeem Vouchers");
             System.out.println("2-Redeem Loyalty Points");
             System.out.println("3-Payment");
-            System.out.println("4-Cancel order");
+            System.out.println("4-Exit");
             Scanner in = new Scanner(System.in);
             int option = in.nextInt();
             switch (option) {
@@ -98,8 +140,46 @@ public class OrderManager {
                     // break while loop
                     flag = false;
                 }
-                default -> {}
+                default -> {
+                }
             }
         }
     }
+
+    public void displayOrderItems(Order ord) {
+        for (CartItem x : ord.getItems()) {
+            x.getItem().printItem();
+        }
+    }
+
+    public void viewOrders(Customer owner) {
+        if (owner.getOrders() == null){
+            System.out.println("\n\n No Order History\n Hurry up and buy some sweets!\n\n");
+        }
+        else{
+            for (Integer id : owner.getOrders().keySet()) {
+                Order x = owner.getOrders().get(id);
+                displayOrderItems(x);
+                x.isDelivered();
+                displayOrderDetails(x);
+            }
+        }
+    }
+
+    public void toCancel(Customer owner){
+        viewOrders(owner);
+        System.out.println("Enter the order which want to cancel: ");
+        System.out.println("0: Exit");
+        Scanner in = new Scanner(System.in);
+        int id = in.nextInt();
+        if (owner.getOrders().get(id) == null && id != 0){
+            System.out.println("Invalid Order");
+        }
+        else{
+            if(owner.getOrders().get(id).canBeCancelled()){
+                owner.getOrders().get(id).cancelOrder(owner.getOrders().get(id));
+            }
+        }
+    }
+
 }

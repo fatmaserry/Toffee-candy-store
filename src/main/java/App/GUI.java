@@ -2,6 +2,7 @@ package App;
 
 import Cart.ShoppingCart;
 import Orders.Order;
+import Orders.OrderManager;
 
 import java.util.Scanner;
 
@@ -17,7 +18,6 @@ public class GUI {
         while(true){
             if(app.currentSession.getCurrentCustomer() == null){
                 guestMenu();
-
             }
             else{
                 System.out.println("Welcome " + app.currentSession.getCurrentCustomer().getUsername());
@@ -32,7 +32,8 @@ public class GUI {
         System.out.println("2-Reset Password");
         System.out.println("3-Products");
         System.out.println("4-View Cart");
-        System.out.println("5-Exit");
+        System.out.println("5-View Order History");
+        System.out.println("6-Exit");
         Scanner in = new Scanner(System.in);
         int option = in.nextInt();
         switch (option) {
@@ -61,7 +62,6 @@ public class GUI {
                     switch (opt) {
                         case 1 -> {
                             app.getCurrentSession().getCurrentCustomer().getCart().checkout();
-
                         }
                         case 2 -> {
                             app.getCurrentSession().getCurrentCustomer().getCart().removeItemFromCart(); //remove item form cart
@@ -71,7 +71,13 @@ public class GUI {
                     }
                 }
             }
-            default -> {}
+            case 5->{
+                OrderManager x = new OrderManager();
+                x.toCancel(app.getCurrentSession().getCurrentCustomer());
+            }
+            default -> {
+                System.exit(1);
+            }
         }
     }
 
@@ -102,6 +108,7 @@ public class GUI {
             case 3 -> app.resetPassword();
             case 4 -> app.getAuthenticationService().getCatalog().filterByCategory();
             default -> {
+                System.exit(1);
             }
         }
     }

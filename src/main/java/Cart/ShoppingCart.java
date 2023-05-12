@@ -149,7 +149,8 @@ public class ShoppingCart{
 
     public void checkout(){
        OrderManager manager = new OrderManager();
-        manager.createOrder(owner.getCart().getListOfClassCartItem(), owner.getCart().getOverallPrice(),owner);
+       manager.createOrder(owner.getCart().getListOfClassCartItem(), owner.getCart().getOverallPrice(),owner);
+       manager.displayMenu();
     }
 
     public ArrayList<CartItem> getListOfClassCartItem(){

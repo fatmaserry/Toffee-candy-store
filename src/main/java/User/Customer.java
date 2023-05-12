@@ -13,17 +13,14 @@ public class Customer {
     private String password;
     private String address;
     private int loyaltyPoints;
-    private ArrayList<Order> orders;
+    private HashMap<Integer,Order> orders;
     private ShoppingCart cart;
 
     // HashMap<code,Voucher>
     private HashMap<Integer,Voucher> vouchers;
 
-    public Customer() {
-        this.orders = new ArrayList<>();
-    }
     public Customer(String name, String email, String password, String address){
-        orders = new ArrayList<>();
+        this.orders = new HashMap<>();
         this.username = name;
         this.email = email;
         this.password = password;
@@ -31,13 +28,8 @@ public class Customer {
         this.cart = new ShoppingCart(this);
     }
 
-    public void updateProfile() {
-
-    }
-
-    public void addOrder(Order order) {
-        orders.add(order);
-
+    public void addOrder(int id,Order order) {
+        orders.put(id,order);
     }
 
     public void addVoucher(int code,Voucher voucher) {
@@ -88,11 +80,11 @@ public class Customer {
         this.loyaltyPoints = loyaltyPoints;
     }
 
-    public ArrayList<Order> getOrders() {
+    public HashMap<Integer, Order> getOrders() {
         return orders;
     }
 
-    public void setOrders(ArrayList<Order> orders) {
+    public void setOrders(HashMap<Integer,Order> orders) {
         this.orders = orders;
     }
 

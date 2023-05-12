@@ -3,8 +3,6 @@ import App.*;
 import Cart.CartItem;
 import Products.*;
 import User.Customer;
-
-import java.lang.foreign.StructLayout;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -195,6 +193,8 @@ public class Order {
     // save order in owner OrderList,
     // place order to be out to delivered status
     public boolean placeOrder(Order order){
+        String new_address;
+
         System.out.println("To confirm the order, Please choose the shipping address: \n" +
                 "1. Your Address: " + order.details.getAddress() + "\n"+
                 "2. New Address");
@@ -204,10 +204,12 @@ public class Order {
         // Enter shipping address
         if( choice == 2 ){
             System.out.println("Enter the address: ");
-            String new_address = in.nextLine();
+            new_address = in.nextLine();
 
             // set address of order
             order.details.setAddress(new_address);
+        }
+        if (choice == 2 || choice == 1 ){
 
             // change status of order
             order.details.setStatus(orderStatus.Out_to_delivery);
@@ -216,27 +218,17 @@ public class Order {
             order.details.setDate(LocalDateTime.now());
 
             // add order to customer list
-            owner.addOrder(order);
+            owner.addOrder(order.details.getOrderID(),order);
 
-            System.out.println("Thank you, the delivery address has been set!" +
-                    "\nWaiting for your opinion of our products.");
+            System.out.println("\n\nThank you, the delivery address has been set!" +
+                    "\nWaiting for your opinion of our products.\n\n");
 
             return true;
-        }else{
-            System.out.println("Invalid option. Try again");
+        }
+        else{
+            System.out.println("\n\nInvalid option. Try again\n\n");
             return false;
         }
-    }
-
-    public boolean changeAddress(){
-        System.out.println("Enter your new address: ");
-        Scanner in = new Scanner(System.in);
-        String address = in.nextLine();
-        if(!address.equals(details.getAddress())){
-            details.setAddress(address);
-            return true;
-        }
-        return false;
     }
 
 
@@ -250,6 +242,17 @@ public class Order {
     public void cancelOrder(Order order) {
         if(order.canBeCancelled()){
             order.details.setStatus(orderStatus.Cancelled);
+            if (order.getUsedVouchers() != null) {
+                // return the used vouchers
+                for (Voucher i : order.getUsedVouchers()) {
+                    order.getOwner().getVouchers().put(i.getVoucherCode(), i);
+                }
+            }
+            if (order.getUsedLoyaltyPoints() != 0) {
+                // return the used loyalty points
+                order.getOwner().setLoyaltyPoints(order.getOwner().getLoyaltyPoints() +
+                        order.getUsedLoyaltyPoints());
+            }
             System.out.println("Order has been cancelled");
         }
         else{
@@ -258,7 +261,9 @@ public class Order {
         }
     }
 
-    public void reorder(Order order) {
-
+    public void isDelivered(){
+        if (!this.canBeCancelled())
+            this.details.setStatus(orderStatus.Closed);
     }
+
 }

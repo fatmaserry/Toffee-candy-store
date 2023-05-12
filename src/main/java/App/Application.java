@@ -2,7 +2,6 @@ package App;
 
 import User.Customer;
 import User.SessionManager;
-
 import java.util.Scanner;
 
 public class Application {

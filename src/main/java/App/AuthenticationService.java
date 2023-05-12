@@ -14,12 +14,10 @@ public class AuthenticationService {
     private Catalog catalog;
     private final HashMap<String, Customer> customers;
     protected static OTPConfirmationEmail emailSender = new OTPConfirmationEmail();
-    private ArrayList<Order> orders;
 
     public AuthenticationService() {
         catalog = new Catalog();
         customers = new HashMap<>();
-        orders = new ArrayList<>();
     }
 
     public Boolean verifyLogin(String email, String password) {
@@ -49,9 +47,6 @@ public class AuthenticationService {
     }
 
 
-    public void addOrder(Order order) {
-        orders.add(order);
-    }
     public Catalog getCatalog() {
         return catalog;
     }
@@ -62,14 +57,6 @@ public class AuthenticationService {
 
     public HashMap<String, Customer> getCustomers() {
         return customers;
-    }
-
-    public ArrayList<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(ArrayList<Order> orders) {
-        this.orders = orders;
     }
 
     public static OTPConfirmationEmail getEmailSender() {
