@@ -149,7 +149,7 @@ public class OrderManager {
     }
 
     public boolean viewOrders(Customer owner) {
-        if (owner.getOrders() == null){
+        if (owner.getOrders().isEmpty()){
             System.out.println("\n\n No Order History\n Hurry up and buy some sweets!\n\n");
             return false;
         }

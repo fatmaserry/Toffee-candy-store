@@ -135,7 +135,7 @@ public class ShoppingCart{
     //We need to print the quantity of each item in cart
     //Then we need to print at last the quantity and the total price of the whole shopping cart
     public void printCartDetails(){
-        System.out.println("        -------CART------");
+        System.out.println("\n  -------CART------");
         if ( owner.getCart().getQuantity() == 0 ){
             System.out.println("    Your cart is empty");
             System.out.println("Be sure to fill your cart with something you like\n\n");
