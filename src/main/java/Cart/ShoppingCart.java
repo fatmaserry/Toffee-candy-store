@@ -67,11 +67,11 @@ public class ShoppingCart{
                     ItemType Sealed=ItemType.Sealed; //sold by item
 
                     if(listOfItems.get(i).getType()==Loose){
-                        System.out.println("Enter how many kilos do you want to buy.\n");
+                        System.out.println("Enter how many kilos do you want to buy: ");
                     }else if(listOfItems.get(i).getType()==Sealed){
-                        System.out.println("Enter how many items do you want to buy.\n");
+                        System.out.println("Enter how many items do you want to buy: ");
                     }else{
-                        System.out.println("Enter how many vouchers do you want to buy.\n");
+                        System.out.println("Enter how many vouchers do you want to buy: ");
                     }
                     int quantity = in.nextInt();
                     //checking if entered quantity is valid
@@ -137,7 +137,7 @@ public class ShoppingCart{
     public void printCartDetails(){
         System.out.println("\n  -------CART------");
         if ( owner.getCart().getQuantity() == 0 ){
-            System.out.println("    Your cart is empty");
+            System.out.println("  Your cart is empty");
             System.out.println("Be sure to fill your cart with something you like\n\n");
         }
         else {
