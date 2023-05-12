@@ -1,10 +1,6 @@
 package Cart;
-import App.Application;
-import App.GUI;
-import App.SessionManager;
-import Orders.Order;
+import Orders.OrderManager;
 import Products.*;
-import Cart.*;
 import User.Customer;
 
 import java.util.ArrayList;
@@ -148,13 +144,12 @@ public class ShoppingCart{
             for (int i = 0; i < owner.getCart().getListOfClassCartItem().size(); i++) {
                 owner.getCart().getListOfClassCartItem().get(i).getItem().printItem();
             }
-
-            // REMOVE ITEM CODE
         }
     }
 
-    public Order checkout(){
-        return new Order(listOfClassCartItem,overallPrice,owner);
+    public void checkout(){
+       OrderManager manager = new OrderManager();
+        manager.createOrder(owner.getCart().getListOfClassCartItem(), owner.getCart().getOverallPrice(),owner);
     }
 
     public ArrayList<CartItem> getListOfClassCartItem(){

@@ -6,7 +6,7 @@ import Orders.Order;
 import java.util.Scanner;
 
 public class GUI {
-    private Application app;
+    protected Application app;
 
     public GUI(){
         app = new Application();
@@ -32,47 +32,46 @@ public class GUI {
         System.out.println("2-Reset Password");
         System.out.println("3-Products");
         System.out.println("4-View Cart");
+        System.out.println("5-Exit");
         Scanner in = new Scanner(System.in);
         int option = in.nextInt();
-        switch (option){
-            case 1:
+        switch (option) {
+            case 1 ->
+            {
                 app.currentSession.setCurrentCustomer(null);
-                break;
-            case 2:
+            }
+            case 2 -> {
                 app.resetPassword();
-                break;
-            case 3:
+            }
+            case 3 -> {
                 app.getAuthenticationService().getCatalog().filterByCategory();  //print catalog
                 app.currentSession.getCurrentCustomer().getCart()
                         .addItemToCart(app.getAuthenticationService().getCatalog().getItems()); //add item to cart
-                break;
-            case 4:
+            }
+            case 4 -> {
                 app.currentSession.getCurrentCustomer().getCart().printCartDetails();//print cart details
+
                 // if cart is not empty
-                if ( app.currentSession.getCurrentCustomer().getCart().getQuantity() != 0) {
+                if (app.currentSession.getCurrentCustomer().getCart().getQuantity() != 0) {
                     System.out.println("Choose the number of the option you want: ");
                     System.out.println("1-Checkout");
                     System.out.println("2-Remove item from cart");
                     System.out.println("3-Back to menu");
                     int opt = in.nextInt();
                     switch (opt) {
-                        case 1:
-                            Order pending_Order
-                                    = app.currentSession.getCurrentCustomer()
-                                    .getCart().checkout();
-                            pending_Order.displayMenu(pending_Order);
-                            break;
-                        case 2:
-                            app.currentSession.getCurrentCustomer().getCart().removeItemFromCart(); //remove item form cart
-                            app.currentSession.getCurrentCustomer().getCart().printCartDetails(); //print cart details after item is removed
-                            break;
-                        case 3:
-                            break;
+                        case 1 -> {
+                            app.getCurrentSession().getCurrentCustomer().getCart().checkout();
+
+                        }
+                        case 2 -> {
+                            app.getCurrentSession().getCurrentCustomer().getCart().removeItemFromCart(); //remove item form cart
+                            app.getCurrentSession().getCurrentCustomer().getCart().printCartDetails(); //print cart details after item is removed
+                        }
+                        default -> {}
                     }
                 }
-                break;
-            default:
-                break;
+            }
+            default -> {}
         }
     }
 
@@ -82,33 +81,28 @@ public class GUI {
         System.out.println("2-Register");
         System.out.println("3-Reset Password");
         System.out.println("4-Catalog");
+        System.out.println("5-Exit");
         Scanner in = new Scanner(System.in);
         int option = in.nextInt();
-        switch (option){
-            case 1:
-                if(loginInfoForm()){
+        switch (option) {
+            case 1 -> {
+                if (loginInfoForm()) {
                     System.out.println("Welcome to our store");
-                }
-                else{
+                } else {
                     System.out.println("Login failed");
                 }
-                break;
-            case 2:
-                if(registerInfoForm()){
+            }
+            case 2 -> {
+                if (registerInfoForm()) {
                     System.out.println("You have registered new account");
-                }
-                else{
+                } else {
                     System.out.println("Registration failed");
                 }
-                break;
-            case 3:
-                app.resetPassword();
-                break;
-            case 4:
-                app.getAuthenticationService().getCatalog().filterByCategory();
-                break;
-            default:
-                break;
+            }
+            case 3 -> app.resetPassword();
+            case 4 -> app.getAuthenticationService().getCatalog().filterByCategory();
+            default -> {
+            }
         }
     }
 

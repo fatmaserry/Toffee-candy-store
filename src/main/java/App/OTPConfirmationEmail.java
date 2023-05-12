@@ -2,7 +2,6 @@ package App;
 
 import java.util.Properties;
 import java.util.Random;
-
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;

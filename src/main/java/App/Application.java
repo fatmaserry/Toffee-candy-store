@@ -1,6 +1,7 @@
 package App;
 
 import User.Customer;
+import User.SessionManager;
 
 import java.util.Scanner;
 
@@ -56,7 +57,6 @@ public class Application {
     public AuthenticationService getAuthenticationService() {
         return authenticationService;
     }
-
     public void setAuthenticationService(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
     }
@@ -66,4 +66,5 @@ public class Application {
     public void setCurrentSession(SessionManager currentSession) {
         this.currentSession = currentSession;
     }
+
 }

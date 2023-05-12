@@ -14,27 +14,28 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-        <dependencies>
-            <dependency>
+    <dependencies>
+        <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>3.8.1</version>
                 <scope>test</scope>
-            </dependency>
+        </dependency>
 
             <!-- https://mvnrepository.com/artifact/jakarta.mail/jakarta.mail-api -->
-            <dependency>
+        <dependency>
                 <groupId>jakarta.mail</groupId>
                 <artifactId>jakarta.mail-api</artifactId>
                 <version>2.1.1</version>
-            </dependency>
+        </dependency>
 
             <!-- https://mvnrepository.com/artifact/com.sun.mail/jakarta.mail -->
-            <dependency>
+        <dependency>
                 <groupId>org.eclipse.angus</groupId>
                 <artifactId>jakarta.mail</artifactId>
                 <version>1.0.0</version>
-            </dependency>
+        </dependency>
 
-        </dependencies>
+    </dependencies>
+
 </project>

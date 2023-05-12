@@ -1,15 +1,14 @@
 package Orders;
 
 import User.Customer;
-
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class OrderDetails {
     private float finalPrice; // finalPrice stands for the price after discount (if there is)
     private static int id = 2345; // Initial value for the id, Increase with every order
     private final int orderID;
     private final String customerName;
-    private Date date = null;
+    private LocalDateTime date = null;
     private orderStatus status = null;
     private String address;
     private int customerPhone = 0;
@@ -37,11 +36,11 @@ public class OrderDetails {
         return customerName;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 

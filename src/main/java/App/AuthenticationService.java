@@ -30,7 +30,6 @@ public class AuthenticationService {
 
     public Boolean verifyRegister(Customer customer) {
         if (!customers.containsKey(customer.getEmail())) {
-
             String otp = emailSender.OTPGenerator();
             if (emailSender.sendOTP(customer.getUsername(), customer.getEmail(), otp,"Register")) {
                 System.out.println("To confirm registeration, Please check your email.\n" +
@@ -50,6 +49,9 @@ public class AuthenticationService {
     }
 
 
+    public void addOrder(Order order) {
+        orders.add(order);
+    }
     public Catalog getCatalog() {
         return catalog;
     }
