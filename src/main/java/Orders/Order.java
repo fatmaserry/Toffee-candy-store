@@ -248,21 +248,29 @@ public class Order {
     public void cancelOrder(Order order) {
         if(order.canBeCancelled()){
             order.details.setStatus(orderStatus.Cancelled);
+
+            // return the used vouchers
             if (order.getUsedVouchers() != null) {
-                // return the used vouchers
                 for (Voucher i : order.getUsedVouchers()) {
                     order.getOwner().getVouchers().put(i.getVoucherCode(), i);
                 }
             }
+            // return the used loyalty points
             if (order.getUsedLoyaltyPoints() != 0) {
-                // return the used loyalty points
+
                 order.getOwner().setLoyaltyPoints(order.getOwner().getLoyaltyPoints() +
                         order.getUsedLoyaltyPoints());
             }
+
+            // return gained loyalty points
+            order.getOwner().setLoyaltyPoints((int) (order.getOwner().getLoyaltyPoints() -
+                                order.getDetails().getFinalPrice()));
+
             System.out.println("\n\nOrder has been cancelled\n\n");
         }
         else{
-            System.out.println("\nYou can't cancel this order." +
+            System.out.println(
+                    "You can't cancel this order." +
                     "\nIt has been 24 hours since you ordered it");
         }
     }
