@@ -172,7 +172,9 @@ public class OrderManager {
             int id = in.nextInt();
             if (owner.getOrders().get(id) == null && id != 0) {
                 System.out.println("Invalid Order");
-            } else {
+            } else if (id == 0){
+                return;
+            }else{
                 if (owner.getOrders().get(id).canBeCancelled()) {
                     owner.getOrders().get(id).cancelOrder(owner.getOrders().get(id));
                 }
