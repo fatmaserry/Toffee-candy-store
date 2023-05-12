@@ -24,7 +24,7 @@ public class Application {
     }
 
     public Boolean register(String name, String email, String password, String address) {
-        Customer newCustomer = new Customer(name, email, password, address);
+        Customer newCustomer = new Customer(name, email, password, address, 0);
         return authenticationService.verifyRegister(newCustomer);
     }
 

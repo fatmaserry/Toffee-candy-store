@@ -142,7 +142,7 @@ public class ShoppingCart{
         }
         else {
             for (int i = 0; i < owner.getCart().getListOfClassCartItem().size(); i++) {
-                owner.getCart().getListOfClassCartItem().get(i).getItem().printItem();
+                owner.getCart().getListOfClassCartItem().get(i).printItem();
             }
         }
     }

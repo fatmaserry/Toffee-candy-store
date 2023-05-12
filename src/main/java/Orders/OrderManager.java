@@ -130,8 +130,7 @@ public class OrderManager {
                     }
                     if (order.getUsedLoyaltyPoints() != 0) {
                         // return the used loyalty points
-                        order.getOwner().setLoyaltyPoints(order.getOwner().getLoyaltyPoints() +
-                                order.getUsedLoyaltyPoints());
+                        order.getOwner().setLoyaltyPoints(order.getOwner().getLoyaltyPoints() + order.getUsedLoyaltyPoints());
                     }
                     // break while loop
                     flag = false;
