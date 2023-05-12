@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class ShoppingCart{
     private int quantity;
     private float overallPrice;
-    private Customer owner;
+    private Customer customer;
 
     // to store class of cart items that the user adds to cart
     private ArrayList<CartItem> listOfClassCartItem;
@@ -29,22 +29,19 @@ public class ShoppingCart{
     }
 
     public ShoppingCart(Customer user) {
-        this.listOfClassCartItem = new ArrayList<CartItem>();
+        this.listOfClassCartItem = new ArrayList<>();
         this.quantity = 0;
         this.overallPrice=0;
-        this.owner = user;
+        this.customer = user;
     }
     public void addItemToCart( HashMap<String, ArrayList<Item>> catalogItems ) {
-
-        // to get the map of items from catalog
-        HashMap<String, ArrayList<Item>> itemMap = catalogItems;
 
         // to store all items from map in it
         ArrayList<Item> listOfItems = new ArrayList<>();
 
         // adding items from map to array list
-        for (String s : itemMap.keySet()) {
-            listOfItems.addAll(itemMap.get(s));
+        for (String s : catalogItems.keySet()) {
+            listOfItems.addAll(catalogItems.get(s));
         }
 
         System.out.println("Choose the number of the option you want: ");
@@ -74,6 +71,7 @@ public class ShoppingCart{
                         System.out.println("Enter how many vouchers do you want to buy: ");
                     }
                     int quantity = in.nextInt();
+
                     //checking if entered quantity is valid
                     while (quantity<=0 || quantity>50){
                         System.out.println("Invalid quantity, Try again .\n");
@@ -81,13 +79,13 @@ public class ShoppingCart{
                     }
                     // if entered id is valid then add item to cart item list
                     CartItem cartItem = new CartItem(listOfItems.get(i),quantity);
-                    owner.getCart().getListOfClassCartItem().add(cartItem);
+                    customer.getCart().getListOfClassCartItem().add(cartItem);
 
                     // add to overall price the total price in cartItem
-                    owner.getCart().setOverallPrice(owner.getCart().getOverallPrice() + cartItem.getTotalPrice());
+                    customer.getCart().setOverallPrice(customer.getCart().getOverallPrice() + cartItem.getTotalPrice());
 
                     // Increase the quantity
-                    owner.getCart().setQuantity(owner.getCart().getQuantity()+1);
+                    customer.getCart().setQuantity(customer.getCart().getQuantity()+1);
                 }
             }
             if (!check){
@@ -99,33 +97,33 @@ public class ShoppingCart{
     }
 
     public void removeItemFromCart() {
-        if (owner.getCart().getQuantity() == 0) {
-            System.out.println("Your cart is empty");
-            System.out.println("Be sure to fill your cart with something you like");
+        if (customer.getCart().getQuantity() == 0) {
+            System.out.println("\n\nYour cart is empty");
+            System.out.println("\nBe sure to fill your cart with something you like");
         } else {
             System.out.println("Enter item id: ");
             Scanner in = new Scanner(System.in);
             int id = in.nextInt();
             boolean check = false;
-            for (int i = 0; i < owner.getCart().getListOfClassCartItem().size(); i++) {
+            for (int i = 0; i < customer.getCart().getListOfClassCartItem().size(); i++) {
 
-                if (id == owner.getCart().getListOfClassCartItem().get(i).getItem().getItemId()) {
+                if (id == customer.getCart().getListOfClassCartItem().get(i).getItem().getItemId()) {
 
                     // firstly decrease from overall price the unit price
-                    owner.getCart().overallPrice -= owner.getCart().getListOfClassCartItem().get(i).getTotalPrice();
+                    customer.getCart().overallPrice -= customer.getCart().getListOfClassCartItem().get(i).getTotalPrice();
 
                     // if entered id is valid then remove cart item from cart item list
-                    owner.getCart().getListOfClassCartItem().remove(i);
+                    customer.getCart().getListOfClassCartItem().remove(i);
 
                     // decrease the quantity of shopping cart
-                    owner.getCart().setQuantity(owner.getCart().getQuantity()-1);
+                    customer.getCart().setQuantity(customer.getCart().getQuantity()-1);
                     check = true;
                 }
             }
             if (!check) {
-                System.out.println("Invalid id or the item is not in cart.");
+                System.out.println("\nInvalid id or the item is not in cart.");
             } else {
-                System.out.println("item removed successfully\n");
+                System.out.println("\nitem removed successfully");
             }
         }
     }
@@ -136,20 +134,20 @@ public class ShoppingCart{
     //Then we need to print at last the quantity and the total price of the whole shopping cart
     public void printCartDetails(){
         System.out.println("\n  -------CART------");
-        if ( owner.getCart().getQuantity() == 0 ){
+        if ( customer.getCart().getQuantity() == 0 ){
             System.out.println("  Your cart is empty");
             System.out.println("Be sure to fill your cart with something you like\n\n");
         }
         else {
-            for (int i = 0; i < owner.getCart().getListOfClassCartItem().size(); i++) {
-                owner.getCart().getListOfClassCartItem().get(i).printItem();
+            for (int i = 0; i < customer.getCart().getListOfClassCartItem().size(); i++) {
+                customer.getCart().getListOfClassCartItem().get(i).printItem();
             }
         }
     }
 
     public void checkout(){
        OrderManager manager = new OrderManager();
-       manager.createOrder(owner.getCart().getListOfClassCartItem(), owner.getCart().getOverallPrice(),owner);
+       manager.createOrder(customer.getCart().getListOfClassCartItem(), customer.getCart().getOverallPrice(), customer);
        manager.displayMenu();
     }
 

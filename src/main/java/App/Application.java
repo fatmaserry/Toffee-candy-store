@@ -28,29 +28,26 @@ public class Application {
         return authenticationService.verifyRegister(newCustomer);
     }
 
-    public Boolean resetPassword() {
+    public void resetPassword() {
         Scanner in = new Scanner(System.in);
         System.out.println("Enter Your Email: ");
         String email = in.nextLine();
 
         String otp = AuthenticationService.emailSender.OTPGenerator();
         if (AuthenticationService.emailSender.sendOTP(
-                currentSession.getCurrentCustomer().getUsername(),
-                currentSession.getCurrentCustomer().getEmail(), otp,"ResetPass")) {
-            System.out.print("\n\nTo reset password, Please check your email.\n\n");
+                currentSession.getCurrentCustomer().getUsername(),email, otp,"ResetPass")) {
+            System.out.print("\n\nTo reset password, Please check your email.\n");
             System.out.print("Enter the OTP here: ");
             String entered_otp = in.nextLine();
             if (!entered_otp.equals(otp)) {
                 System.out.println("Wrong OTP! Please Try Again.");
-                return false;
             } else {
                 System.out.println("Enter Your New Password: ");
                 String password = in.nextLine();
                 currentSession.getCurrentCustomer().setPassword(password);
-                return true;
+                System.out.println("Password has changed successfully");
             }
         }
-        return false;
     }
 
     public AuthenticationService getAuthenticationService() {

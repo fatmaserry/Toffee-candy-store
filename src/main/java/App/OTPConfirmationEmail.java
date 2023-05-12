@@ -12,7 +12,7 @@ public class OTPConfirmationEmail {
         StringBuilder str = new StringBuilder();
 
         for (int i = 0; i < 6; i++) {
-            str.append(random.nextInt(10));
+            str.append(random.nextInt(4));
         }
         return str.toString();
     }

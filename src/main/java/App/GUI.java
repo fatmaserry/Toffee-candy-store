@@ -1,9 +1,6 @@
 package App;
 
-import Cart.ShoppingCart;
-import Orders.Order;
 import Orders.OrderManager;
-
 import java.util.Scanner;
 
 public class GUI {
@@ -26,7 +23,7 @@ public class GUI {
         }
     }
 
-    void loginCustomerMenu(){
+    void loginCustomerMenu() {
         System.out.println("Choose the number of the option you want: ");
         System.out.println("1-Log out");
         System.out.println("2-Reset Password");
@@ -37,22 +34,26 @@ public class GUI {
         Scanner in = new Scanner(System.in);
         int option = in.nextInt();
         switch (option) {
-            case 1 ->
-            {
+            case 1:
+                // logout as set registered user equal null
                 app.currentSession.setCurrentCustomer(null);
-            }
-            case 2 -> {
+                break;
+            case 2:
+                // reset registered user password
                 app.resetPassword();
-            }
-            case 3 -> {
-                app.getAuthenticationService().getCatalog().filterByCategory();  //print catalog
+                break;
+            case 3:
+                //print catalog items by category
+                app.getAuthenticationService().getCatalog().filterByCategory();
+                //add item to shopping cart
                 app.currentSession.getCurrentCustomer().getCart()
-                        .addItemToCart(app.getAuthenticationService().getCatalog().getItems()); //add item to cart
-            }
-            case 4 -> {
-                app.currentSession.getCurrentCustomer().getCart().printCartDetails();//print cart details
+                        .addItemToCart(app.getAuthenticationService().getCatalog().getItems());
+                break;
+            case 4:
+                //print shopping cart details
+                app.currentSession.getCurrentCustomer().getCart().printCartDetails();
 
-                // if cart is not empty
+                //if shopping cart is not empty
                 if (app.currentSession.getCurrentCustomer().getCart().getQuantity() != 0) {
                     System.out.println("Choose the number of the option you want: ");
                     System.out.println("1-Checkout");
@@ -60,28 +61,28 @@ public class GUI {
                     System.out.println("3-Back to menu");
                     int opt = in.nextInt();
                     switch (opt) {
-                        case 1 -> {
+                        case 1:
                             app.getCurrentSession().getCurrentCustomer().getCart().checkout();
-                        }
-                        case 2 -> {
+                            break;
+                        case 2:
                             app.getCurrentSession().getCurrentCustomer().getCart().removeItemFromCart(); //remove item form cart
                             app.getCurrentSession().getCurrentCustomer().getCart().printCartDetails(); //print cart details after item is removed
-                        }
-                        default -> {}
+                            break;
+                        default:
+                            break;
                     }
                 }
-            }
-            case 5->{
+                break;
+            case 5:
                 OrderManager x = new OrderManager();
                 x.toCancel(app.getCurrentSession().getCurrentCustomer());
-            }
-            default -> {
+                break;
+            default:
                 System.exit(1);
-            }
         }
     }
 
-    void guestMenu(){
+    void guestMenu() {
         System.out.println("Choose the number of the option you want: ");
         System.out.println("1-Login");
         System.out.println("2-Register");
@@ -91,25 +92,28 @@ public class GUI {
         Scanner in = new Scanner(System.in);
         int option = in.nextInt();
         switch (option) {
-            case 1 -> {
+            case 1:
                 if (loginInfoForm()) {
                     System.out.println("Welcome to our store");
                 } else {
                     System.out.println("Login failed");
                 }
-            }
-            case 2 -> {
+                break;
+            case 2:
                 if (registerInfoForm()) {
                     System.out.println("You have registered new account");
                 } else {
                     System.out.println("Registration failed");
                 }
-            }
-            case 3 -> app.resetPassword();
-            case 4 -> app.getAuthenticationService().getCatalog().filterByCategory();
-            default -> {
+                break;
+            case 3:
+                app.resetPassword();
+                break;
+            case 4:
+                app.getAuthenticationService().getCatalog().filterByCategory();
+                break;
+            default:
                 System.exit(1);
-            }
         }
     }
 
@@ -130,7 +134,6 @@ public class GUI {
         String email = in.nextLine();
         System.out.println("Enter Your Password: ");
         String password = in.nextLine();
-        // check password
         System.out.println("Enter Your Address: ");
         String address = in.nextLine();
         return app.register(name, email, password, address);
