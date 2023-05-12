@@ -84,7 +84,7 @@ public class Order {
             System.out.println("--------------------------------------------------------");
         }
 
-        System.out.println("Enter code of voucher: ");
+        System.out.print("Enter code of voucher: ");
         Scanner in = new Scanner(System.in);
         int codeOfVoucher = in.nextInt();
 
@@ -162,7 +162,7 @@ public class Order {
         String otp = AuthenticationService.getEmailSender().OTPGenerator();
         if (AuthenticationService.getEmailSender().sendOTP(
                 owner.getUsername(), owner.getEmail(), otp, "ConfirmPhone")) {
-            System.out.println("To complete the process, Please check your email.");
+            System.out.print("\n\nTo Complete the Process, Please check your email.\n\n");
             System.out.print("Enter the OTP here: ");
             String entered_otp = in.nextLine();
 
@@ -181,7 +181,8 @@ public class Order {
 
                 // change the status of order to be in process
                 details.setStatus(orderStatus.In_Process);
-                System.out.println("Confirmed! your order is in process.");
+
+                System.out.println("\n\nConfirmed! your order is in process.\n\n");
                 return true;
             }
         }
@@ -220,6 +221,9 @@ public class Order {
             // add order to customer list
             owner.addOrder(order.details.getOrderID(),order);
 
+            // increase the owner loyalty points as one pound = one point
+            owner.setLoyaltyPoints((int) order.details.getFinalPrice());
+
             System.out.println("\n\nThank you, the delivery address has been set!" +
                     "\nWaiting for your opinion of our products.\n\n");
 
@@ -232,6 +236,7 @@ public class Order {
     }
 
 
+    // check if order can be cancelled after ordered it
     public boolean canBeCancelled() {
         LocalDateTime now = LocalDateTime.now();
         Duration duration = Duration.between(details.getDate(), now);
@@ -239,6 +244,7 @@ public class Order {
         return hoursElapsed < 24;
     }
 
+    // cancelOrder to cancel the order
     public void cancelOrder(Order order) {
         if(order.canBeCancelled()){
             order.details.setStatus(orderStatus.Cancelled);
@@ -253,17 +259,24 @@ public class Order {
                 order.getOwner().setLoyaltyPoints(order.getOwner().getLoyaltyPoints() +
                         order.getUsedLoyaltyPoints());
             }
-            System.out.println("Order has been cancelled");
+            System.out.println("\n\nOrder has been cancelled\n\n");
         }
         else{
-            System.out.println("You can't cancel this order." +
+            System.out.println("\nYou can't cancel this order." +
                     "\nIt has been 24 hours since you ordered it");
         }
     }
 
     public void isDelivered(){
-        if (!this.canBeCancelled())
+        if (!this.canBeCancelled()) {
             this.details.setStatus(orderStatus.Closed);
+
+            // loop to check on vouchers and add to owner vouchers
+            for (CartItem x : this.items) {
+                if (x.getItem().getType() == ItemType.Voucher)
+                    this.owner.addVoucher(x.getItem().getItemId(), (Voucher) x.getItem());
+            }
+        }
     }
 
 }

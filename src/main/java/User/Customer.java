@@ -3,8 +3,6 @@ package User;
 import Cart.ShoppingCart;
 import Products.Voucher;
 import Orders.Order;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Customer {

@@ -8,7 +8,6 @@ public class SessionManager {
     public Customer getCurrentCustomer() {
         return currentCustomer;
     }
-
     public void setCurrentCustomer(Customer currentCustomer) {
         this.currentCustomer = currentCustomer;
     }

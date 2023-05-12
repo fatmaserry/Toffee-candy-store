@@ -30,8 +30,8 @@ public class AuthenticationService {
         if (!customers.containsKey(customer.getEmail())) {
             String otp = emailSender.OTPGenerator();
             if (emailSender.sendOTP(customer.getUsername(), customer.getEmail(), otp,"Register")) {
-                System.out.println("To confirm registeration, Please check your email.\n" +
-                        "Enter the OTP here: ");
+                System.out.print("\n\nTo Confirm Registeration, Please check your email.\n\n");
+                System.out.print("Enter the OTP here: ");
                 Scanner in = new Scanner(System.in);
                 String entered_otp = in.nextLine();
                 if (!entered_otp.equals(otp)) {

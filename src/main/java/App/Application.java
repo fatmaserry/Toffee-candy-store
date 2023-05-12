@@ -37,8 +37,8 @@ public class Application {
         if (AuthenticationService.emailSender.sendOTP(
                 currentSession.getCurrentCustomer().getUsername(),
                 currentSession.getCurrentCustomer().getEmail(), otp,"ResetPass")) {
-            System.out.println("To reset password, Please check your email.\n" +
-                    "Enter the OTP here: ");
+            System.out.print("\n\nTo reset password, Please check your email.\n\n");
+            System.out.print("Enter the OTP here: ");
             String entered_otp = in.nextLine();
             if (!entered_otp.equals(otp)) {
                 System.out.println("Wrong OTP! Please Try Again.");

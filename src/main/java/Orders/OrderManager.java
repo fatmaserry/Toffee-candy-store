@@ -1,10 +1,6 @@
 package Orders;
 
-import App.AuthenticationService;
-import App.GUI;
 import Cart.CartItem;
-import Orders.Order;
-import Products.Item;
 import Products.Voucher;
 import User.Customer;
 import java.util.ArrayList;
@@ -168,8 +164,8 @@ public class OrderManager {
 
     public void toCancel(Customer owner){
         viewOrders(owner);
-        System.out.println("Enter the order which want to cancel: ");
         System.out.println("0: Exit");
+        System.out.print("Enter the order id which you want to cancel: ");
         Scanner in = new Scanner(System.in);
         int id = in.nextInt();
         if (owner.getOrders().get(id) == null && id != 0){
