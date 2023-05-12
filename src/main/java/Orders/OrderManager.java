@@ -148,9 +148,10 @@ public class OrderManager {
         }
     }
 
-    public void viewOrders(Customer owner) {
+    public boolean viewOrders(Customer owner) {
         if (owner.getOrders() == null){
             System.out.println("\n\n No Order History\n Hurry up and buy some sweets!\n\n");
+            return false;
         }
         else{
             for (Integer id : owner.getOrders().keySet()) {
@@ -159,21 +160,22 @@ public class OrderManager {
                 x.isDelivered();
                 displayOrderDetails(x);
             }
+            return true;
         }
     }
 
     public void toCancel(Customer owner){
-        viewOrders(owner);
-        System.out.println("0: Exit");
-        System.out.print("Enter the order id which you want to cancel: ");
-        Scanner in = new Scanner(System.in);
-        int id = in.nextInt();
-        if (owner.getOrders().get(id) == null && id != 0){
-            System.out.println("Invalid Order");
-        }
-        else{
-            if(owner.getOrders().get(id).canBeCancelled()){
-                owner.getOrders().get(id).cancelOrder(owner.getOrders().get(id));
+        if (viewOrders(owner)) {
+            System.out.println("0: Exit");
+            System.out.print("Enter the order id which you want to cancel: ");
+            Scanner in = new Scanner(System.in);
+            int id = in.nextInt();
+            if (owner.getOrders().get(id) == null && id != 0) {
+                System.out.println("Invalid Order");
+            } else {
+                if (owner.getOrders().get(id).canBeCancelled()) {
+                    owner.getOrders().get(id).cancelOrder(owner.getOrders().get(id));
+                }
             }
         }
     }
