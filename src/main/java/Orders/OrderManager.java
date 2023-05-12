@@ -130,8 +130,7 @@ public class OrderManager {
                     }
                     if (order.getUsedLoyaltyPoints() != 0) {
                         // return the used loyalty points
-                        order.getOwner().setLoyaltyPoints(order.getOwner().getLoyaltyPoints() +
-                                order.getUsedLoyaltyPoints());
+                        order.getOwner().setLoyaltyPoints(order.getOwner().getLoyaltyPoints() + order.getUsedLoyaltyPoints());
                     }
                     // break while loop
                     flag = false;
@@ -172,7 +171,7 @@ public class OrderManager {
             int id = in.nextInt();
             if (owner.getOrders().get(id) == null && id != 0) {
                 System.out.println("Invalid Order");
-            } else {
+            } else if(owner.getOrders().get(id) != null) {
                 if (owner.getOrders().get(id).canBeCancelled()) {
                     owner.getOrders().get(id).cancelOrder(owner.getOrders().get(id));
                 }

@@ -4,6 +4,10 @@ import Orders.Order;
 import Products.Catalog;
 import User.Customer;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
@@ -18,6 +22,40 @@ public class AuthenticationService {
     public AuthenticationService() {
         catalog = new Catalog();
         customers = new HashMap<>();
+        try {
+            File users = new File("src/main/java/users.txt");
+            Scanner reader = new Scanner(users);
+            int cnt = 1;
+            String username = "", email = "", password = "", address = "";
+            float points = 0.0F;
+            while(reader.hasNextLine()){
+                String data = reader.nextLine();
+                switch (cnt % 5){
+                    case 0:
+                        customers.put(email, new Customer(username, email, password, address, points));
+                    case 1:
+                        username = data;
+                        break;
+                    case 2:
+                        email = data;
+                        break;
+                    case 3:
+                        password = data;
+                        break;
+                    case 4:
+                        address = data;
+                        break;
+                    case 5:
+                        points = Float.parseFloat(data);
+                        break;
+                }
+                cnt++;
+            }
+        }
+        catch (FileNotFoundException e){
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
     }
 
     public Boolean verifyLogin(String email, String password) {
@@ -38,6 +76,24 @@ public class AuthenticationService {
                     System.out.println("Wrong OTP! Please Try Again.");
                     return false;
                 } else {
+                    try {
+                        FileWriter myWriter = new FileWriter("src/main/java/users.txt", true);
+                        myWriter.write("\n");
+                        myWriter.write(customer.getUsername());
+                        myWriter.write("\n");
+                        myWriter.write(customer.getEmail());
+                        myWriter.write("\n");
+                        myWriter.write(customer.getPassword());
+                        myWriter.write("\n");
+                        myWriter.write(customer.getAddress());
+                        myWriter.write("\n");
+                        myWriter.write(String.valueOf(customer.getLoyaltyPoints()));
+                        myWriter.write("\n");
+                        myWriter.close();
+                    } catch (IOException e) {
+                        System.out.println("An error occurred.");
+                        e.printStackTrace();
+                    }
                     customers.put(customer.getEmail(), customer);
                     return true;
                 }

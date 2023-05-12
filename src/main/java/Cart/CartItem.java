@@ -30,4 +30,22 @@ public class CartItem {
         return this.item;
     }
 
+    public void printItem(){
+        System.out.println("---------------------------------------------------------------------------");
+        System.out.println(String.format("| item id: %-63s", item.getItemId()) + "|");
+        System.out.println(String.format("| name: %-66s", item.getName()) + "|");
+        int cnt = 0;
+        for(String i: item.getDescription().split("\n")){
+            if(cnt == 0)
+                System.out.println(String.format("| description: %-59s", i) + "|");
+            else
+                System.out.println(String.format("| %-72s", i) + "|");
+            cnt++;
+        }
+        System.out.println(String.format("| price: %-65s", item.getUnitPrice()) + "|");
+        System.out.println(String.format("| quantity: %-62s", getQuantity()) + "|");
+        System.out.println(String.format("| total price: %-59s", getTotalPrice()) + "|");
+        System.out.println("---------------------------------------------------------------------------");
+    }
+
 }
