@@ -11,10 +11,19 @@ import static App.AuthenticationService.*;
 public class OrderManager {
     Order order;
 
+    /**
+     * @param owner registered customer
+     * @param cartItems items of shopping cart
+     * @param totalPriceOfItems
+     * this method create a new order and set order as pending one
+     */
     public void createOrder(ArrayList<CartItem> cartItems, float totalPriceOfItems, Customer owner) {
         this.order = new Order(cartItems, totalPriceOfItems, owner);
     }
 
+    /**
+     * this method displays the details of pending order
+     */
     public void displayOrderDetails() {
         System.out.println("\n\n-------------------------------------------------");
         System.out.println("Order ID: " + order.getDetails().getOrderID());
@@ -53,7 +62,11 @@ public class OrderManager {
 
     }
 
-    // overload of displayOrderDetails()
+    /**
+     * @param order
+     * this method is an overload of displayOrderDetails method
+     * using it to display the details of a given order
+     */
     public void displayOrderDetails(Order order) {
         System.out.println("\n\n-------------------------------------------------");
         System.out.println("Order ID: " + order.getDetails().getOrderID());
@@ -92,6 +105,9 @@ public class OrderManager {
 
     }
 
+    /**
+     * this method shows a menu to customer during payment process
+     */
     public void displayMenu() {
         boolean flag = true;
         while (flag) {
@@ -141,12 +157,20 @@ public class OrderManager {
         }
     }
 
+    /**
+     * @param ord Order object
+     * this method displays the items of a given order
+     */
     public void displayOrderItems(Order ord) {
         for (CartItem x : ord.getItems()) {
             x.getItem().printItem();
         }
     }
 
+    /**
+     * @param owner registered customer
+     * this method displays orders history of the owner
+     */
     public boolean viewOrders(Customer owner) {
         if (owner.getOrders().isEmpty()){
             System.out.println("\n\n No Order History\n Hurry up and buy some sweets!\n\n");
@@ -163,6 +187,12 @@ public class OrderManager {
         }
     }
 
+    /**
+     * @param owner registered customer
+     * this method asks the customer about id of order
+     * that he wants to cancel then checks if it is valid
+     * if it is valid, it cancels the order
+     */
     public void toCancel(Customer owner){
         if (viewOrders(owner)) {
             System.out.println("0: Exit");

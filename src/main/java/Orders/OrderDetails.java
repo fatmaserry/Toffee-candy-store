@@ -20,7 +20,6 @@ public class OrderDetails {
         this.finalPrice = totalPriceOfItems;
     }
 
-
     public int getOrderID() {
         return orderID;
     }

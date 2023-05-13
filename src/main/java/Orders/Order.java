@@ -69,6 +69,10 @@ public class Order {
         return usedVouchers;
     }
 
+    /**
+     * this method asks the customer if he wants to use his vouchers
+     * to have a discount over the total price of order
+     */
     public void redeemVoucher() {
         HashMap<Integer, Voucher> curr_vouchers = owner.getVouchers();
 
@@ -115,6 +119,10 @@ public class Order {
         }
     }
 
+    /**
+     * this method asks the customer if he wants to use his loyalty points
+     * to have a discount over the total price of order
+     */
     public void redeemLoyaltyPoints() {
 
         // If customer hasn't loyalty points
@@ -148,6 +156,8 @@ public class Order {
 
     /**
      * @return boolean
+     * this method sets the payment details after confirming a valid
+     * phone number of the customer
      * return true if the payment process is done and false if it isn't
      */
     public boolean payment() {
@@ -194,9 +204,15 @@ public class Order {
         return false;
     }
 
-    // PlaceOrder function to choose the shipping address,
-    // save order in owner OrderList,
-    // place order to be out to delivered status
+    /**
+     * @return boolean
+     * @param order
+     * this method takes the Order object as parameter
+     * to confirm it by choosing the shipping address
+     * and place order to be out to delivered status
+     * return true if user chooses his default address
+     * or enter a new address
+     */
     public boolean placeOrder(Order order){
         String new_address;
 
@@ -240,7 +256,10 @@ public class Order {
     }
 
 
-    // check if order can be cancelled after ordered it
+    /**
+     * @return boolean
+     * this method checks if order can be cancelled after user ordered it
+     */
     public boolean canBeCancelled() {
         LocalDateTime now = LocalDateTime.now();
         Duration duration = Duration.between(details.getDate(), now);
@@ -248,7 +267,9 @@ public class Order {
         return hoursElapsed < 24;
     }
 
-    // cancelOrder to cancel the order
+    /**
+     * this method cancels the order if it is valid
+     */
     public void cancelOrder(Order order) {
         if(order.canBeCancelled()){
             order.details.setStatus(orderStatus.Cancelled);
@@ -279,6 +300,10 @@ public class Order {
         }
     }
 
+    /**
+     * this method checks if the order can not be cancelled ,
+     * it changes the status of order to "Closed" as it has been delivered to customer
+     */
     public void isDelivered(){
         if (!this.canBeCancelled()) {
             this.details.setStatus(orderStatus.Closed);
