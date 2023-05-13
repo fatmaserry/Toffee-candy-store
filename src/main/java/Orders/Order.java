@@ -223,35 +223,50 @@ public class Order {
         int choice = in.nextInt();
 
         // Enter shipping address
-        if( choice == 2 ){
-            System.out.println("Enter the address: ");
-            new_address = in.nextLine();
+        switch (choice) {
+            case 1:
+                // change status of order
+                order.details.setStatus(orderStatus.Out_to_delivery);
 
-            // set address of order
-            order.details.setAddress(new_address);
-        }
-        if (choice == 2 || choice == 1 ){
+                // set created date
+                order.details.setDate(LocalDateTime.now());
 
-            // change status of order
-            order.details.setStatus(orderStatus.Out_to_delivery);
+                // add order to customer list
+                owner.addOrder(order.details.getOrderID(),order);
 
-            // set created date
-            order.details.setDate(LocalDateTime.now());
+                // increase the owner loyalty points as one pound = one point
+                owner.setLoyaltyPoints((int) order.details.getFinalPrice());
 
-            // add order to customer list
-            owner.addOrder(order.details.getOrderID(),order);
+                System.out.println("\n\nThank you, the delivery address has been set!" +
+                        "\nWaiting for your opinion of our products.\n\n");
 
-            // increase the owner loyalty points as one pound = one point
-            owner.setLoyaltyPoints((int) order.details.getFinalPrice());
+                return true;
+            case 2:
+                System.out.println("Enter the address: ");
+                in.nextLine();
+                new_address = in.nextLine();
 
-            System.out.println("\n\nThank you, the delivery address has been set!" +
-                    "\nWaiting for your opinion of our products.\n\n");
+                // set address of order
+                order.details.setAddress(new_address);
+                // change status of order
+                order.details.setStatus(orderStatus.Out_to_delivery);
 
-            return true;
-        }
-        else{
-            System.out.println("\n\nInvalid option. Try again\n\n");
-            return false;
+                // set created date
+                order.details.setDate(LocalDateTime.now());
+
+                // add order to customer list
+                owner.addOrder(order.details.getOrderID(),order);
+
+                // increase the owner loyalty points as one pound = one point
+                owner.setLoyaltyPoints((int) order.details.getFinalPrice());
+
+                System.out.println("\n\nThank you, the delivery address has been set!" +
+                        "\nWaiting for your opinion of our products.\n\n");
+
+                return true;
+            default:
+                System.out.println("\n\nInvalid option. Try again\n\n");
+                return false;
         }
     }
 

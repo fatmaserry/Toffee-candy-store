@@ -30,7 +30,7 @@ public class AuthenticationService {
             float points = 0.0F;
             while(reader.hasNextLine()){
                 String data = reader.nextLine();
-                switch (cnt % 5){
+                switch (cnt % 6){
                     case 0:
                         customers.put(email, new Customer(username, email, password, address, points));
                     case 1:
@@ -100,7 +100,7 @@ public class AuthenticationService {
                         myWriter.write(customer.getAddress());
                         myWriter.write("\n");
                         myWriter.write(String.valueOf(customer.getLoyaltyPoints()));
-                        myWriter.write("\n");
+                        myWriter.write("\n.");
                         myWriter.close();
                     } catch (IOException e) {
                         System.out.println("An error occurred.");
