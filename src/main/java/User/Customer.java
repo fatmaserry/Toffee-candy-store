@@ -16,7 +16,15 @@ public class Customer {
 
     // HashMap<code,Voucher>
     private HashMap<Integer,Voucher> vouchers;
-
+    /**
+     * This constructor sets the attributes of the customer object
+     *
+     * @param name the customer's name
+     * @param email the customer's email
+     * @param password the customer's password
+     * @param address the customer's address
+     * @param points the customer's loyalty points
+     */
     public Customer(String name, String email, String password, String address, float points){
         this.orders = new HashMap<>();
         this.username = name;

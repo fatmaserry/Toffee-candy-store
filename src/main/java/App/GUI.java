@@ -10,19 +10,23 @@ public class GUI {
         app = new Application();
         showMenu();
     }
-
+    /**
+     * This method show the option menu for the user
+     */
     public void showMenu() {
-        while(true){
-            if(app.currentSession.getCurrentCustomer() == null){
+        while(true) {
+            if(app.currentSession.getCurrentCustomer() == null) {
                 guestMenu();
             }
-            else{
+            else {
                 System.out.println("Welcome " + app.currentSession.getCurrentCustomer().getUsername());
                 loginCustomerMenu();
             }
         }
     }
-
+    /**
+     * This method prints the menu for the logged-in user
+     */
     void loginCustomerMenu() {
         System.out.println("Choose the number of the option you want: ");
         System.out.println("1-Log out");
@@ -81,7 +85,9 @@ public class GUI {
                 System.exit(1);
         }
     }
-
+    /**
+     * This method prints the menu for the guest user
+     */
     void guestMenu() {
         System.out.println("Choose the number of the option you want: ");
         System.out.println("1-Login");
@@ -116,7 +122,10 @@ public class GUI {
                 System.exit(1);
         }
     }
-
+    /**
+     * This method takes the inputs of the login process from the user
+     * @return true if the information is valid and false otherwise
+     */
     public Boolean loginInfoForm() {
         Scanner in = new Scanner(System.in);
         System.out.println("Enter Your Email: ");
@@ -125,7 +134,10 @@ public class GUI {
         String password = in.nextLine();
         return app.login(email, password);
     }
-
+    /**
+     * This method takes the inputs of the registration process from the user
+     * @return true if the information is valid and false otherwise
+     */
     public Boolean registerInfoForm() {
         Scanner in = new Scanner(System.in);
         System.out.println("Enter Your Name: ");

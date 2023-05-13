@@ -8,11 +8,29 @@ public class Application {
     private AuthenticationService authenticationService;
     protected SessionManager currentSession;
 
+    /**
+     * This method returns the sum of two numbers.
+     *
+     * @param a the first number
+     * @param b the second number
+     * @return the sum of a and b
+     * @example
+     * <pre>{@code
+     * int result = sum(1, 2);
+     * System.out.println(result); // prints 3
+     * }</pre>
+     */
     public Application(){
         authenticationService = new AuthenticationService();
         currentSession = new SessionManager();
     }
-
+    /**
+     * This method returns true if the email is valid and the email's password is correct, otherwise false
+     *
+     * @param email the user's email
+     * @param password the user's password
+     * @return Boolean
+     */
     public Boolean login(String email, String password) {
         if(authenticationService.verifyLogin(email, password)){
             currentSession.setCurrentCustomer(authenticationService.getCustomers().get(email));
@@ -22,12 +40,22 @@ public class Application {
             return false;
         }
     }
-
+    /**
+     * This method returns true if the user information are valid and the account created successfully
+     *
+     * @param name the user's name
+     * @param email the user's email
+     * @param password the user's password
+     * @param address the user's address
+     * @return Boolean
+     */
     public Boolean register(String name, String email, String password, String address) {
         Customer newCustomer = new Customer(name, email, password, address, 0);
         return authenticationService.verifyRegister(newCustomer);
     }
-
+    /**
+     * This method gives the ability to the user to change his password if he forgot it or for other security reasons
+     */
     public void resetPassword() {
         Scanner in = new Scanner(System.in);
         System.out.println("Enter Your Email: ");

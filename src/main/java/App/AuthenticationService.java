@@ -16,6 +16,9 @@ public class AuthenticationService {
     private final HashMap<String, Customer> customers;
     protected static OTPConfirmationEmail emailSender = new OTPConfirmationEmail();
 
+    /**
+     * This constructor creates catalog and hashmap then it's import the users that have logged in the system before
+     */
     public AuthenticationService() {
         catalog = new Catalog();
         customers = new HashMap<>();
@@ -54,13 +57,25 @@ public class AuthenticationService {
             e.printStackTrace();
         }
     }
-
+    /**
+     * This method returns true if there is email is already registered before and the password match the user's password, otherwise false
+     *
+     * @param email the user's email
+     * @param password the user's password
+     * @return Boolean
+     */
     public Boolean verifyLogin(String email, String password) {
-        if (customers.get(email) == null)
+        if (customers.get(email) == null){
             return false;
+        }
         return Objects.equals(customers.get(email).getPassword(), password);
     }
-
+    /**
+     * This method returns true if the customer doesn't registered to the system before and the customer entered a valid OTP
+     *
+     * @param customer the customer object that contains the customer info
+     * @return Boolean
+     */
     public Boolean verifyRegister(Customer customer) {
         if (!customers.containsKey(customer.getEmail())) {
             String otp = emailSender.OTPGenerator();

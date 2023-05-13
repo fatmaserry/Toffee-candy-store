@@ -9,7 +9,9 @@ import java.util.Scanner;
 
 public class Catalog {
     private HashMap<String, ArrayList<Item>> items;
-
+    /**
+     * This constructor creates new hashmap for the items and fetch the items details and store it in the hashmap of the items
+     */
     public Catalog() {
         items = new HashMap<>();
         try{
@@ -53,7 +55,9 @@ public class Catalog {
             e.printStackTrace();
         }
     }
-
+    /**
+     * This method prints all items
+     */
     public void displayAllItems() {
         System.out.println("All items:");
         for(String s : items.keySet()){
@@ -62,7 +66,9 @@ public class Catalog {
             }
         }
     }
-
+    /**
+     * This method prints items filtered by category
+     */
     public void filterByCategory() {
         for(String s : items.keySet()){
             System.out.println(s);
@@ -71,26 +77,38 @@ public class Catalog {
             }
         }
     }
-
+    /**
+     * This method adds new item to the hashmap of items
+     *
+     * @param category the item's category
+     * @param name the item's name
+     * @param description the item's description
+     * @param price the item's price
+     * @param brand the item's brand
+     * @param type the item's type
+     * @param discount the item's discount
+     */
     public void addItem(String category, String name, String description, float price, String brand, String type, float discount) {
         ItemType itemType;
-        if(Objects.equals(type, "Loose")){
+        if(Objects.equals(type, "Loose")) {
             itemType = ItemType.Loose;
         }
-        else if(Objects.equals(type, "Sealed")){
+        else if(Objects.equals(type, "Sealed")) {
             itemType = ItemType.Sealed;
         }
-        else{
+        else {
             itemType = ItemType.Voucher;
         }
         Item newItem;
-        if(ItemType.Voucher == itemType)
+        if(ItemType.Voucher == itemType) {
             newItem = new Voucher(category, name, price, description, brand, discount, itemType, price);
-        else
+        }
+        else {
             newItem = new Item(category, name, price, description, brand, discount, itemType);
-
-        if(items.containsKey(category))
+        }
+        if(items.containsKey(category)) {
             items.get(category).add(newItem);
+        }
         else {
             items.put(category, new ArrayList<>());
             items.get(category).add(newItem);
