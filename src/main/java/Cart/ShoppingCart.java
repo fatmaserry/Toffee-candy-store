@@ -141,7 +141,7 @@ public class ShoppingCart{
 
                 if (id == customer.getCart().getListOfClassCartItem().get(i).getItem().getItemId()) {
 
-                    // firstly decrease from overall price the unit price
+                    // firstly decrease from overall price the total price
                     customer.getCart().overallPrice -= customer.getCart().getListOfClassCartItem().get(i).getTotalPrice();
 
                     // if entered id is valid then remove cart item from cart item list
