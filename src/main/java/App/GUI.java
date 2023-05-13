@@ -159,7 +159,7 @@ public class GUI {
         }
         System.out.println("Enter Your Password: ");
         String password = in.nextLine();
-        r = Pattern.compile("^(?=.\\d)(?=.[a-z])(?=.*[A-z]).{8,}$");
+        r = Pattern.compile("^(?=.*\\d)(?=.*[a-z])(?=.*[A-z]).{8,}$");
         m = r.matcher(password);
         while(!m.find()){
             System.out.println("The password should consist of at least 8 characters\nand should contain at least one digit, one small character, and one capital character");
