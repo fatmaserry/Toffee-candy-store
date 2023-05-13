@@ -28,12 +28,34 @@ public class ShoppingCart{
         overallPrice = p;
     }
 
+    /**
+     * This is the constructor of the class that takes parameter user from class Customer
+     * and sets it to its private attribute customer.
+     *
+     * it also sets quantity and overallPrice by default to zero
+     * it create listOFClassCartItem by setting it to its default constructor ArrayList<>()
+     *
+     * @param user input of  type Item Customer that sets private attribute customer to its value
+     */
     public ShoppingCart(Customer user) {
         this.listOfClassCartItem = new ArrayList<>();
         this.quantity = 0;
         this.overallPrice=0;
         this.customer = user;
     }
+
+    /**
+     * This method takes a Hashmap as a parameter that  contains all items info
+     * Then we move items from Hashmap to ArrayList
+     * Then it asks user to add id of item to add
+     * Then asks the user to enter the quantity of item he/she wants
+     * Then it checks if the id is in the ArrayList of items
+     * if true, then it creates CartItem object and add item and quantity to its constructor
+     * Then it adds the CartItem object to the private ArrayList listOfClassCartItem, then done, item is addes
+     * if false, then it prints "Invalid Item ID"
+     *
+     * @param catalogItems is HashMap that contains all items info
+     */
     public void addItemToCart( HashMap<String, ArrayList<Item>> catalogItems ) {
 
         // to store all items from map in it
@@ -96,6 +118,16 @@ public class ShoppingCart{
         }
     }
 
+    /**
+     * This is method checks of the shopping cart is empty
+     * if true, then it prints "You cart is empty."
+     * if false, then it asks user to enter item ID he/she wants to remove
+     * then it searches for item id in listOfClassCartItem
+     * if id is there then it remove CartItem of the id from lisOfClassCartItem
+     * if  not there is prints "Invalid Item ID"
+     *
+     */
+
     public void removeItemFromCart() {
         if (customer.getCart().getQuantity() == 0) {
             System.out.println("\n\nYour cart is empty");
@@ -129,8 +161,12 @@ public class ShoppingCart{
         }
     }
 
-
-    //print call added items in cart
+    /**
+     * This method checks if cart is empty
+     * if true, it prints "Your cart is empty:
+     * if false, it prints all details of CarItem in listOfClassCartItem
+     */
+    //print all added items in cart
     public void printCartDetails(){
         System.out.println("\n  -------CART------");
         //if cart is empty
@@ -145,6 +181,9 @@ public class ShoppingCart{
         }
     }
 
+    /**
+     * This method takes the user to the next step of making an order after adding items to cart
+     */
     //checkout and moving to the next process of making an order
     public void checkout(){
        OrderManager manager = new OrderManager();
@@ -156,6 +195,9 @@ public class ShoppingCart{
         return listOfClassCartItem;
     }
 
+    /**
+     * This method empties the listOfClassCartItem attribute from CartItem objects in it.
+     */
     public void clearListOfClassCartItem(){
         listOfClassCartItem.clear();
         quantity = 0;

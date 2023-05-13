@@ -5,6 +5,13 @@ public class CartItem {
     private int quantity;
     private float totalPrice;
     private Item item;
+    /**
+     * This is the constructor of the class that takes parameters item from class Item and integer quantity
+     * and sets them to its private attributes item and quantity.
+     *
+     * @param item input of  type Item class that sets private attribute item to its value
+     * @param q to set the private attribute quantity to its vlaue
+     */
     public CartItem(Item item, int q) {
            this.item=item;
            quantity=q;
@@ -30,6 +37,9 @@ public class CartItem {
         return this.item;
     }
 
+    /**
+     * This method prints the details of the CartItem including the details of item itself
+     */
     public void printItem(){        //print Cart Item details
         System.out.println("---------------------------------------------------------------------------");
         System.out.println(String.format("| item id: %-63s", item.getItemId()) + "|");
