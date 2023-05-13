@@ -52,7 +52,7 @@
 
 ## Compiling and Running the Code:
 To compile the code, navigate to the project directory and run the following command:
-"SoftwareEngineering1-ToffeeStore\src\main\java\Main.java"
+- "SoftwareEngineering1-ToffeeStore\src\main\java\Main.java"
 
 
 
