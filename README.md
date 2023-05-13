@@ -17,41 +17,42 @@
 - This project deals with files as we stores items data and users data in text files and retireve them from these files. 
 - The following libraries were used:
 
-java.util.ArrayList;
+1- java.util.ArrayList;
 
-java.util.HashMap;
+2- java.util.HashMap;
 
-java.util.Scanner;
+3- java.util.Scanner;
 
-java.time.Duration;
+4- java.time.Duration;
 
-java.time.LocalDateTime;
+5- java.time.LocalDateTime;
 
-java.io.File;
+6- java.io.File;
 
-java.io.FileNotFoundException;
+7- java.io.FileNotFoundException;
 
-java.io.FileWriter;
+8- java.io.FileWriter;
 
-java.io.IOException;
+9- java.io.IOException;
 
-java.util.Objects;
+10- java.util.Objects;
 
-java.util.Properties;
+11- java.util.Properties;
 
-java.util.Random;
+12- java.util.Random;
 
-jakarta.mail.*;
+13- jakarta.mail.*;
 
-jakarta.mail.internet.InternetAddress;
+14- jakarta.mail.internet.InternetAddress;
 
-jakarta.mail.internet.MimeMessage;
+15- jakarta.mail.internet.MimeMessage;
 
 
 
 
 ## Compiling and Running the Code:
-To compile the code, navigate to the project directory and run the following command:  "SoftwareEngineering1-ToffeeStore\src\main\java\Main.java"
+To compile the code, navigate to the project directory and run the following command:
+"SoftwareEngineering1-ToffeeStore\src\main\java\Main.java"
 
 
 
