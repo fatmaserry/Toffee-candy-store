@@ -7,6 +7,10 @@ import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 
 public class OTPConfirmationEmail {
+
+    /**
+     * this method creates an otp for confirmation
+     */
     public String OTPGenerator() {
         Random random = new Random();
         StringBuilder str = new StringBuilder();
@@ -17,6 +21,14 @@ public class OTPConfirmationEmail {
         return str.toString();
     }
 
+    /**
+     * @param curr_user registered customer
+     * @param email email of registered customer
+     * @param otp one time password
+     * @param typeOfConfirmation type of confirmation message
+     * this method sends an email with otp number
+     * to registered customer via his email
+     */
     public Boolean sendOTP(String curr_user, String email, String otp,String typeOfConfirmation){
 
         boolean flag = false;
