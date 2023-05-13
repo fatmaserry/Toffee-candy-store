@@ -74,7 +74,7 @@ public class ShoppingCart{
 
                     //checking if entered quantity is valid
                     while (quantity<=0 || quantity>50){
-                        System.out.println("Invalid quantity, Try again .\n");
+                        System.out.println("Invalid quantity, Try again.\n(maximum amount you can add is 50 per item)\n");
                         quantity = in.nextInt();
                     }
                     // if entered id is valid then add item to cart item list
@@ -120,6 +120,7 @@ public class ShoppingCart{
                     check = true;
                 }
             }
+            //if entered ID is invalid
             if (!check) {
                 System.out.println("\nInvalid id or the item is not in cart.");
             } else {
@@ -128,12 +129,11 @@ public class ShoppingCart{
         }
     }
 
-    //This function needs to be modified
-    // We need to print the overall price per item in Item cart
-    //We need to print the quantity of each item in cart
-    //Then we need to print at last the quantity and the total price of the whole shopping cart
+
+    //print call added items in cart
     public void printCartDetails(){
         System.out.println("\n  -------CART------");
+        //if cart is empty
         if ( customer.getCart().getQuantity() == 0 ){
             System.out.println("  Your cart is empty");
             System.out.println("Be sure to fill your cart with something you like\n\n");
@@ -145,6 +145,7 @@ public class ShoppingCart{
         }
     }
 
+    //checkout and moving to the next process of making an order
     public void checkout(){
        OrderManager manager = new OrderManager();
        manager.createOrder(customer.getCart().getListOfClassCartItem(), customer.getCart().getOverallPrice(), customer);

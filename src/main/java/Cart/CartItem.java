@@ -30,7 +30,7 @@ public class CartItem {
         return this.item;
     }
 
-    public void printItem(){
+    public void printItem(){        //print Cart Item details
         System.out.println("---------------------------------------------------------------------------");
         System.out.println(String.format("| item id: %-63s", item.getItemId()) + "|");
         System.out.println(String.format("| name: %-66s", item.getName()) + "|");
