@@ -2,6 +2,8 @@ package App;
 
 import Orders.OrderManager;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class GUI {
     protected Application app;
@@ -141,11 +143,33 @@ public class GUI {
     public Boolean registerInfoForm() {
         Scanner in = new Scanner(System.in);
         System.out.println("Enter Your Name: ");
+
         String name = in.nextLine();
         System.out.println("Enter Your Email: ");
         String email = in.nextLine();
+        Pattern r = Pattern.compile("^[a-zA-Z0-9._]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$");
+        Matcher m = r.matcher(email);
+        while(!m.find()){
+            System.out.println("Enter a Valid Email or 0 to exit: ");
+            email = in.nextLine();
+            m = r.matcher(email);
+            if(email.equals("0")) {
+                return false;
+            }
+        }
         System.out.println("Enter Your Password: ");
         String password = in.nextLine();
+        r = Pattern.compile("^(?=.\\d)(?=.[a-z])(?=.*[A-z]).{8,}$");
+        m = r.matcher(password);
+        while(!m.find()){
+            System.out.println("The password should consist of at least 8 characters\nand should contain at least one digit, one small character, and one capital character");
+            System.out.println("Enter Your Password or 0 to exit: ");
+            password = in.nextLine();
+            m = r.matcher(password);
+            if(password.equals("0")) {
+                return false;
+            }
+        }
         System.out.println("Enter Your Address: ");
         String address = in.nextLine();
         return app.register(name, email, password, address);
