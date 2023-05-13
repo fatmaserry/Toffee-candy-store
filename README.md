@@ -13,7 +13,7 @@
 
 ## Development Environment:
 - This project was developed using IntelliJ IDEA Community Edition 2022.3.2 on Windows 10.
-- This project classes are seperated into packages and then we import the package is case we need to use a specific class in other packages.
+- This project classes are seperated into packages and then we import the package in case we need to use a specific class in other packages.
 - This project deals with files as we stores items data and users data in text files and retireve them from these files. 
 - The following libraries were used:
 
