@@ -9,16 +9,7 @@ public class Application {
     protected SessionManager currentSession;
 
     /**
-     * This method returns the sum of two numbers.
-     *
-     * @param a the first number
-     * @param b the second number
-     * @return the sum of a and b
-     * @example
-     * <pre>{@code
-     * int result = sum(1, 2);
-     * System.out.println(result); // prints 3
-     * }</pre>
+     * This constructor creates authentication service and session manager
      */
     public Application(){
         authenticationService = new AuthenticationService();
