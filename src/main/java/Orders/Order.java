@@ -146,6 +146,10 @@ public class Order {
         }
     }
 
+    /**
+     * @return boolean
+     * return true if the payment process is done and false if it isn't
+     */
     public boolean payment() {
         Scanner in = new Scanner(System.in);
         System.out.println("Enter your phone number: ");
