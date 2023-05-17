@@ -99,6 +99,25 @@ public class ShoppingCart{
                         System.out.println("Invalid quantity, Try again.\n(maximum amount you can add is 50 per item)\n");
                         quantity = in.nextInt();
                     }
+
+                    for (CartItem x : listOfClassCartItem){
+                        if (x.getItem().getItemId() == id ){
+                            if ((quantity+x.getQuantity()) > 50){
+                                System.out.println("You reached the max quantity of item. Try again");
+                                return;
+                            }
+                            x.setQuantity(x.getQuantity() + quantity);
+
+
+                            x.setTotalPrice(x.getItem().getUnitPrice());
+                            // add to overall price the total price in cartItem
+                            customer.getCart().setOverallPrice(customer.getCart().getOverallPrice() +
+                                    x.getTotalPrice());
+
+                            System.out.println("Item added successfully\n");
+                            return;
+                        }
+                    }
                     // if entered id is valid then add item to cart item list
                     CartItem cartItem = new CartItem(listOfItems.get(i),quantity);
                     customer.getCart().getListOfClassCartItem().add(cartItem);
@@ -106,7 +125,7 @@ public class ShoppingCart{
                     // add to overall price the total price in cartItem
                     customer.getCart().setOverallPrice(customer.getCart().getOverallPrice() + cartItem.getTotalPrice());
 
-                    // Increase the quantity
+                    // Increase the quantity of cart
                     customer.getCart().setQuantity(customer.getCart().getQuantity()+1);
                 }
             }
@@ -185,10 +204,11 @@ public class ShoppingCart{
      * This method takes the user to the next step of making an order after adding items to cart
      */
     //checkout and moving to the next process of making an order
-    public void checkout(){
-       OrderManager manager = new OrderManager();
-       manager.createOrder(customer.getCart().getListOfClassCartItem(), customer.getCart().getOverallPrice(), customer);
-       manager.displayMenu();
+    public boolean checkout(){
+        OrderManager manager = new OrderManager();
+        ArrayList<CartItem> items = new ArrayList<>(customer.getCart().getListOfClassCartItem());
+        manager.createOrder(items, customer.getCart().getOverallPrice(), customer);
+        return manager.displayMenu();
     }
 
     public ArrayList<CartItem> getListOfClassCartItem(){
@@ -201,5 +221,6 @@ public class ShoppingCart{
     public void clearListOfClassCartItem(){
         listOfClassCartItem.clear();
         quantity = 0;
+        overallPrice = 0;
     }
 }

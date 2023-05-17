@@ -21,7 +21,7 @@ public class CartItem {
         return totalPrice;
     }
     public void setTotalPrice(float p){  //enter the product price per unit
-        totalPrice=p*quantity;     //calculate the overall price of the items
+        totalPrice=p*quantity; //calculate the overall price of the items
     }
     public int getQuantity(){
         return quantity;

@@ -23,11 +23,11 @@ public class AuthenticationService {
         catalog = new Catalog();
         customers = new HashMap<>();
         try {
-            File users = new File("src/main/java/users.txt");
+            File users = new File("E:\\Desktop\\SoftwareEngineering1-ToffeeStore\\src\\main\\java\\users.txt");
             Scanner reader = new Scanner(users);
             int cnt = 1;
             String username = "", email = "", password = "", address = "";
-            float points = 0.0F;
+            int points = 0;
             while(reader.hasNextLine()){
                 String data = reader.nextLine();
                 switch (cnt % 6){
@@ -46,7 +46,7 @@ public class AuthenticationService {
                         address = data;
                         break;
                     case 5:
-                        points = Float.parseFloat(data);
+                        points = Integer.parseInt(data);
                         break;
                 }
                 cnt++;
@@ -89,7 +89,7 @@ public class AuthenticationService {
                     return false;
                 } else {
                     try {
-                        FileWriter myWriter = new FileWriter("src/main/java/users.txt", true);
+                        FileWriter myWriter = new FileWriter("E:\\Desktop\\SoftwareEngineering1-ToffeeStore\\src\\main\\java\\users.txt", true);
                         myWriter.write("\n");
                         myWriter.write(customer.getUsername());
                         myWriter.write("\n");
@@ -115,6 +115,27 @@ public class AuthenticationService {
     }
 
 
+    public void updateFile() {
+        try {
+            FileWriter myWriter = new FileWriter("E:\\Desktop\\SoftwareEngineering1-ToffeeStore\\src\\main\\java\\users.txt");
+            for (String email : customers.keySet()) {
+                myWriter.write(customers.get(email).getUsername());
+                myWriter.write("\n");
+                myWriter.write(customers.get(email).getEmail());
+                myWriter.write("\n");
+                myWriter.write(customers.get(email).getPassword());
+                myWriter.write("\n");
+                myWriter.write(customers.get(email).getAddress());
+                myWriter.write("\n");
+                myWriter.write(String.valueOf(customers.get(email).getLoyaltyPoints()));
+                myWriter.write("\n.\n");
+            }
+            myWriter.close();
+        }catch(IOException e){
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
     public Catalog getCatalog() {
         return catalog;
     }

@@ -10,7 +10,7 @@ public class Customer {
     private String email;
     private String password;
     private String address;
-    private float loyaltyPoints;
+    private int loyaltyPoints;
     private HashMap<Integer,Order> orders;
     private ShoppingCart cart;
 
@@ -25,7 +25,7 @@ public class Customer {
      * @param address the customer's address
      * @param points the customer's loyalty points
      */
-    public Customer(String name, String email, String password, String address, float points){
+    public Customer(String name, String email, String password, String address, int points){
         this.orders = new HashMap<>();
         this.username = name;
         this.email = email;
@@ -33,6 +33,7 @@ public class Customer {
         this.address = address;
         this.loyaltyPoints = points;
         this.cart = new ShoppingCart(this);
+        this.orders = new HashMap<>();
     }
 
     public void addOrder(int id,Order order) {
@@ -79,11 +80,11 @@ public class Customer {
         this.address = address;
     }
 
-    public float getLoyaltyPoints() {
+    public int getLoyaltyPoints() {
         return loyaltyPoints;
     }
 
-    public void setLoyaltyPoints(float loyaltyPoints) {
+    public void setLoyaltyPoints(int loyaltyPoints) {
         this.loyaltyPoints = loyaltyPoints;
     }
 

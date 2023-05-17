@@ -1,5 +1,5 @@
 package Orders;
-import App.*;
+import App.AuthenticationService;
 import Cart.CartItem;
 import Products.*;
 import User.Customer;
@@ -16,13 +16,13 @@ public class Order {
     private Payment paymentMethod;
     private ArrayList<Voucher> usedVouchers;
     private int usedLoyaltyPoints;
-    private Customer owner;
+    private Customer customer;
     private ArrayList<CartItem> items;
 
     public Order(ArrayList<CartItem> items, float totalPriceOfItems, Customer user) {
         this.items = items;
         this.totalPriceOfItems = totalPriceOfItems;
-        this.owner = user;
+        this.customer = user;
         this.paymentMethod = null;
         this.usedVouchers = null;
         this.usedLoyaltyPoints = 0;
@@ -45,8 +45,8 @@ public class Order {
         this.details = details;
     }
 
-    public Customer getOwner() {
-        return owner;
+    public Customer getCustomer() {
+        return customer;
     }
 
     public ArrayList<CartItem> getItems() {
@@ -74,7 +74,7 @@ public class Order {
      * to have a discount over the total price of order
      */
     public void redeemVoucher() {
-        HashMap<Integer, Voucher> curr_vouchers = owner.getVouchers();
+        HashMap<Integer, Voucher> curr_vouchers = customer.getVouchers();
 
         // If customer has no vouchers
         if (curr_vouchers == null) {
@@ -109,7 +109,7 @@ public class Order {
             usedVouchers.add(used_voucher);
 
             // Delete used voucher from user
-            owner.getVouchers().remove(codeOfVoucher);
+            customer.getVouchers().remove(codeOfVoucher);
 
             // Update the final price after applying the discount of Voucher
             details.setFinalPrice(
@@ -126,23 +126,23 @@ public class Order {
     public void redeemLoyaltyPoints() {
 
         // If customer hasn't loyalty points
-        if (owner.getLoyaltyPoints() == 0) {
+        if (customer.getLoyaltyPoints() == 0) {
             System.out.println("You have not loyalty points to use!");
             return;
         }
-        System.out.println("Your loyalty points: " + owner.getLoyaltyPoints());
-        System.out.println("Enter the : " + owner.getLoyaltyPoints());
+        System.out.println("Your loyalty points: " + customer.getLoyaltyPoints());
+        System.out.println("Enter the amount : ");
 
         Scanner in = new Scanner(System.in);
         int numOfPoints = in.nextInt();
 
         // Check if there are enough loyalty points
-        if (numOfPoints <= owner.getLoyaltyPoints()) {
+        if (numOfPoints <= customer.getLoyaltyPoints()) {
             // Add the used loyalty points
             usedLoyaltyPoints += numOfPoints;
 
             // Update the owner loyalty points
-            owner.setLoyaltyPoints(owner.getLoyaltyPoints() - numOfPoints);
+            customer.setLoyaltyPoints(customer.getLoyaltyPoints() - numOfPoints);
 
             // Update the final price after applying the discount of points
             // As one point = one pound
@@ -175,7 +175,7 @@ public class Order {
         // Confirm payment with email address
         String otp = AuthenticationService.getEmailSender().OTPGenerator();
         if (AuthenticationService.getEmailSender().sendOTP(
-                owner.getUsername(), owner.getEmail(), otp, "ConfirmPhone")) {
+                customer.getUsername(), customer.getEmail(), otp, "ConfirmPhone")) {
             System.out.print("\n\nTo Complete the Process, Please check your email.\n\n");
             System.out.print("Enter the OTP here: ");
             String entered_otp = in.nextLine();
@@ -185,8 +185,7 @@ public class Order {
                 System.out.println("Wrong OTP! Please Try Again.");
                 return false;
 
-            }
-            else {
+            } else {
                 // set the phone number
                 details.setCustomerPhone(Integer.parseInt(phone));
 
@@ -204,70 +203,57 @@ public class Order {
         return false;
     }
 
+
     /**
      * @return boolean
-     * @param order
      * this method takes the Order object as parameter
      * to confirm it by choosing the shipping address
      * and place order to be out to delivered status
      * return true if user chooses his default address
      * or enter a new address
      */
-    public boolean placeOrder(Order order){
+    public boolean placeOrder() {
         String new_address;
 
         System.out.println("To confirm the order, Please choose the shipping address: \n" +
-                "1. Your Address: " + order.details.getAddress() + "\n"+
+                "1. Your Address: " + details.getAddress() + "\n" +
                 "2. New Address");
         Scanner in = new Scanner(System.in);
         int choice = in.nextInt();
 
-        // Enter shipping address
-        switch (choice) {
-            case 1:
-                // change status of order
-                order.details.setStatus(orderStatus.Out_to_delivery);
-
-                // set created date
-                order.details.setDate(LocalDateTime.now());
-
-                // add order to customer list
-                owner.addOrder(order.details.getOrderID(),order);
-
-                // increase the owner loyalty points as one pound = one point
-                owner.setLoyaltyPoints((int) order.details.getFinalPrice());
-
-                System.out.println("\n\nThank you, the delivery address has been set!" +
-                        "\nWaiting for your opinion of our products.\n\n");
-
-                return true;
-            case 2:
-                System.out.println("Enter the address: ");
-                in.nextLine();
-                new_address = in.nextLine();
-
-                // set address of order
-                order.details.setAddress(new_address);
-                // change status of order
-                order.details.setStatus(orderStatus.Out_to_delivery);
-
-                // set created date
-                order.details.setDate(LocalDateTime.now());
-
-                // add order to customer list
-                owner.addOrder(order.details.getOrderID(),order);
-
-                // increase the owner loyalty points as one pound = one point
-                owner.setLoyaltyPoints((int) order.details.getFinalPrice());
-
-                System.out.println("\n\nThank you, the delivery address has been set!" +
-                        "\nWaiting for your opinion of our products.\n\n");
-
-                return true;
-            default:
-                System.out.println("\n\nInvalid option. Try again\n\n");
-                return false;
+        if (choice != 1 && choice != 2) {
+            System.out.println("\n\nInvalid option. Try again\n\n");
+            return false;
         }
+        // Enter shipping address
+        if (choice == 2) {
+            System.out.println("Enter the address: ");
+            in.nextLine();
+            new_address = in.nextLine();
+            // set address of order
+            details.setAddress(new_address);
+        }
+        // change status of order
+        details.setStatus(orderStatus.Out_to_delivery);
+
+        // set created date
+        details.setDate(LocalDateTime.now());
+
+        // add order to orders customer list
+        customer.addOrder(details.getOrderID(), this);
+
+        // increase the customer loyalty points
+        customer.setLoyaltyPoints((int) details.getFinalPrice() / 10 );
+
+        // for testing only, adding vouchers after place order to customer
+//        for (CartItem x : this.items) {
+//            if (x.getItem().getType() == ItemType.Voucher)
+//                customer.addVoucher(x.getItem().getItemId(), (Voucher) x.getItem());
+//        }
+
+        System.out.println("\n\nThank you, the delivery address has been set!" +
+                "\nWaiting for your opinion of our products.\n\n");
+        return true;
     }
 
 
@@ -285,26 +271,26 @@ public class Order {
     /**
      * this method cancels the order if it is valid
      */
-    public void cancelOrder(Order order) {
-        if(order.canBeCancelled()){
-            order.details.setStatus(orderStatus.Cancelled);
+    public void cancelOrder() {
+        if(this.canBeCancelled()){
+            this.details.setStatus(orderStatus.Cancelled);
 
             // return the used vouchers
-            if (order.getUsedVouchers() != null) {
-                for (Voucher i : order.getUsedVouchers()) {
-                    order.getOwner().getVouchers().put(i.getVoucherCode(), i);
+            if (this.getUsedVouchers() != null) {
+                for (Voucher i : this.getUsedVouchers()) {
+                    this.getCustomer().getVouchers().put(i.getVoucherCode(), i);
                 }
             }
             // return the used loyalty points
-            if (order.getUsedLoyaltyPoints() != 0) {
+            if (this.getUsedLoyaltyPoints() != 0) {
 
-                order.getOwner().setLoyaltyPoints(order.getOwner().getLoyaltyPoints() +
-                        order.getUsedLoyaltyPoints());
+                this.getCustomer().setLoyaltyPoints(this.getCustomer().getLoyaltyPoints() +
+                        this.getUsedLoyaltyPoints());
             }
 
             // return gained loyalty points
-            order.getOwner().setLoyaltyPoints((int) (order.getOwner().getLoyaltyPoints() -
-                                order.getDetails().getFinalPrice()));
+            this.getCustomer().setLoyaltyPoints((int) (this.getCustomer().getLoyaltyPoints() -
+                                this.getDetails().getFinalPrice()));
 
             System.out.println("\n\nOrder has been cancelled\n\n");
         }
@@ -326,7 +312,7 @@ public class Order {
             // loop to check on vouchers and add to owner vouchers
             for (CartItem x : this.items) {
                 if (x.getItem().getType() == ItemType.Voucher)
-                    this.owner.addVoucher(x.getItem().getItemId(), (Voucher) x.getItem());
+                    this.customer.addVoucher(x.getItem().getItemId(), (Voucher) x.getItem());
             }
         }
     }

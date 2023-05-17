@@ -68,7 +68,9 @@ public class GUI {
                     int opt = in.nextInt();
                     switch (opt) {
                         case 1:
-                            app.getCurrentSession().getCurrentCustomer().getCart().checkout();
+                            if ( app.getCurrentSession().getCurrentCustomer().getCart().checkout() ){
+                                app.getAuthenticationService().updateFile();
+                            }
                             break;
                         case 2:
                             app.getCurrentSession().getCurrentCustomer().getCart().removeItemFromCart(); //remove item form cart

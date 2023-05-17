@@ -6,10 +6,8 @@ import User.Customer;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import static App.AuthenticationService.*;
-
 public class OrderManager {
-    Order order;
+    Order order; // pending order
 
     /**
      * @param owner registered customer
@@ -25,6 +23,7 @@ public class OrderManager {
      * this method displays the details of pending order
      */
     public void displayOrderDetails() {
+        displayOrderItems();
         System.out.println("\n\n-------------------------------------------------");
         System.out.println("Order ID: " + order.getDetails().getOrderID());
 
@@ -108,9 +107,9 @@ public class OrderManager {
     /**
      * this method shows a menu to customer during payment process
      */
-    public void displayMenu() {
-        boolean flag = true;
-        while (flag) {
+    public boolean displayMenu() {
+        int flag = 0;
+        while (flag == 0) {
             displayOrderDetails();
             System.out.println("Choose the number of the option you want: ");
             System.out.println("1-Redeem Vouchers");
@@ -131,9 +130,9 @@ public class OrderManager {
                         // if payment and placeOrder process are done
                         // then clear the shopping cart
                         // and break the while loop (ORDER CONFIRMED)
-                        if (order.placeOrder(order)) {
-                            order.getOwner().getCart().clearListOfClassCartItem();
-                            flag = false;
+                        if (order.placeOrder()) {
+                            order.getCustomer().getCart().clearListOfClassCartItem();
+                            flag = 1;
                         }
                     }
                 }
@@ -141,29 +140,38 @@ public class OrderManager {
                     if (order.getUsedVouchers() != null) {
                         // return the used vouchers
                         for (Voucher i : order.getUsedVouchers()) {
-                            order.getOwner().getVouchers().put(i.getVoucherCode(), i);
+                            order.getCustomer().getVouchers().put(i.getVoucherCode(), i);
                         }
                     }
                     if (order.getUsedLoyaltyPoints() != 0) {
                         // return the used loyalty points
-                        order.getOwner().setLoyaltyPoints(order.getOwner().getLoyaltyPoints() + order.getUsedLoyaltyPoints());
+                        order.getCustomer().setLoyaltyPoints(order.getCustomer().getLoyaltyPoints() + order.getUsedLoyaltyPoints());
                     }
                     // break while loop
-                    flag = false;
+                    flag = 2;
                 }
                 default -> {
                 }
             }
         }
+        return flag == 1 ;
     }
 
     /**
-     * @param ord Order object
+     * this method displays the items of pending order
+     */
+    public void displayOrderItems() {
+        for (CartItem x : order.getItems()) {
+            x.printItem();
+        }
+    }
+    /**
+     * @param order Order object
      * this method displays the items of a given order
      */
-    public void displayOrderItems(Order ord) {
-        for (CartItem x : ord.getItems()) {
-            x.getItem().printItem();
+    public void displayOrderItems(Order order) {
+        for (CartItem x : order.getItems()) {
+            x.printItem();
         }
     }
 
@@ -188,24 +196,24 @@ public class OrderManager {
     }
 
     /**
-     * @param owner registered customer
+     * @param currentCustomer registered customer
      * this method asks the customer about id of order
      * that he wants to cancel then checks if it is valid
      * if it is valid, it cancels the order
      */
-    public void toCancel(Customer owner){
-        if (viewOrders(owner)) {
+    public void toCancel(Customer currentCustomer){
+        if (viewOrders(currentCustomer)) {
             System.out.println("0: Exit");
             System.out.print("Enter the order id which you want to cancel: ");
             Scanner in = new Scanner(System.in);
             int id = in.nextInt();
-            if (owner.getOrders().get(id) == null && id != 0) {
+            if (currentCustomer.getOrders().get(id) == null && id != 0) {
                 System.out.println("Invalid Order");
             } else if (id == 0){
                 return;
             }else{
-                if (owner.getOrders().get(id).canBeCancelled()) {
-                    owner.getOrders().get(id).cancelOrder(owner.getOrders().get(id));
+                if (currentCustomer.getOrders().get(id).canBeCancelled()) {
+                    currentCustomer.getOrders().get(id).cancelOrder();
                 }
             }
         }

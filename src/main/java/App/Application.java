@@ -3,6 +3,8 @@ package App;
 import User.Customer;
 import User.SessionManager;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Application {
     private AuthenticationService authenticationService;
@@ -45,7 +47,8 @@ public class Application {
         return authenticationService.verifyRegister(newCustomer);
     }
     /**
-     * This method gives the ability to the user to change his password if he forgot it or for other security reasons
+     * This method gives the ability to the user to change his password
+     * if he forgot it or for other security reasons
      */
     public void resetPassword() {
         Scanner in = new Scanner(System.in);
@@ -54,17 +57,47 @@ public class Application {
 
         String otp = AuthenticationService.emailSender.OTPGenerator();
         if (AuthenticationService.emailSender.sendOTP(
-                currentSession.getCurrentCustomer().getUsername(),email, otp,"ResetPass")) {
+                currentSession.getCurrentCustomer().getUsername(), email, otp, "ResetPass")) {
             System.out.print("\n\nTo reset password, Please check your email.\n");
             System.out.print("Enter the OTP here: ");
             String entered_otp = in.nextLine();
             if (!entered_otp.equals(otp)) {
                 System.out.println("Wrong OTP! Please Try Again.");
             } else {
-                System.out.println("Enter Your New Password: ");
-                String password = in.nextLine();
-                currentSession.getCurrentCustomer().setPassword(password);
-                System.out.println("Password has changed successfully");
+                boolean flag = true;
+                while (flag) {
+                    System.out.println("Enter Your New Password or 0 to exit: ");
+                    String password = in.nextLine();
+                    if (password.equals("0")) {
+                        break;
+                    }
+                    Pattern r = Pattern.compile("^(?=.*\\d)(?=.*[a-z])(?=.*[A-z]).{8,}$");
+                    Matcher m = r.matcher(password);
+                    if (m.find()) {
+                        currentSession.getCurrentCustomer().setPassword(password);
+                        authenticationService.updateFile();
+                        System.out.println("Password has changed successfully");
+                        break;
+                    }
+                    else {
+                        while (!m.find()) {
+                            System.out.println("The password should consist of at least 8 characters\nand should contain at least one digit, one small character, and one capital character");
+                            System.out.println("Enter Your New Password or 0 to exit: ");
+                            password = in.nextLine();
+                            m = r.matcher(password);
+                            if (password.equals("0")) {
+                                flag = false;
+                                break;
+                            } else if (m.find()) {
+                                currentSession.getCurrentCustomer().setPassword(password);
+                                authenticationService.updateFile();
+                                System.out.println("Password has changed successfully");
+                                flag = false;
+                                break;
+                            }
+                        }
+                    }
+                }
             }
         }
     }
