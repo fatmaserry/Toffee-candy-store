@@ -17,35 +17,35 @@
 - This project deals with files as we store items data and users data in text files and retireve them from these files. 
 - The following libraries were used:
 
-1- java.util.ArrayList;
+  1- java.util.ArrayList;
 
-2- java.util.HashMap;
+  2- java.util.HashMap;
 
-3- java.util.Scanner;
+  3- java.util.Scanner;
 
-4- java.time.Duration;
+  4- java.time.Duration;
 
-5- java.time.LocalDateTime;
+  5- java.time.LocalDateTime;
 
-6- java.io.File;
+  6- java.io.File;
 
-7- java.io.FileNotFoundException;
+  7- java.io.FileNotFoundException;
 
-8- java.io.FileWriter;
+  8- java.io.FileWriter;
 
-9- java.io.IOException;
+  9- java.io.IOException;
 
-10- java.util.Objects;
+  10- java.util.Objects;
 
-11- java.util.Properties;
+  11- java.util.Properties;
 
-12- java.util.Random;
+  12- java.util.Random;
 
-13- jakarta.mail.*;
+  13- jakarta.mail.*;
 
-14- jakarta.mail.internet.InternetAddress;
+  14- jakarta.mail.internet.InternetAddress;
 
-15- jakarta.mail.internet.MimeMessage;
+  15- jakarta.mail.internet.MimeMessage;
 
 
 
