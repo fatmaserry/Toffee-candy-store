@@ -57,10 +57,12 @@ To compile the code, navigate to the project directory and run the following com
 
 
 ## Troubleshooting:
-- if you encountered a problem during the registration or confirming the order with OTP, try to use Cellular Data instead of WIFI.
+- If you encountered a problem during the registration or confirming the order with OTP, try to use Cellular Data instead of WIFI.
 
 - If you encounter anyother issues, please contact the project maintainers at:
 mena7akim@gmail.com
+
 fatmaserry16@gmail.com
+
 zeyad.alnaggar@gmail.com
 
